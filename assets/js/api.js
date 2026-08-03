@@ -9,7 +9,7 @@
  */
 const CONFIG_API = {
     // 🔥 GANTI DENGAN URL WEB APP ANDA
-    BASE_URL: 'https://script.google.com/macros/s/AKfycbyqkYLjJHhNdmCzz0waflIjyFFwYvt2K5wSVlWRsiCR1ASvnjieml5AMtJKQCUR_xqPNA/exec',
+    BASE_URL: 'https://script.google.com/macros/s/AKfycbyHiq6iZouK4pxiFh88Zx68_LNSr7PdeN0tjVpsPeArEl4WwVRzg0I4NIWVNJZOc7yyUw/exec',
     TIMEOUT: 15000, // 15 detik
     RETRY_COUNT: 3,
 };
