@@ -8,7 +8,7 @@
  * Ganti BASE_URL dengan URL Web App Anda dari Google Apps Script
  */
 const CONFIG_API = {
-    BASE_URL: 'https://script.google.com/macros/s/AKfycbyuC5s5IesmftApCw2RWTKl5MzL-8P8kIUrOSJ5deyyQLJtOwDtmWeaSwEZeFBO0lPtoQ/exec',
+    BASE_URL: 'https://script.google.com/macros/s/AKfycbz3ILulTXdWCqm8u9TJ0c_0mH36Z9UryW5L0D8yx7jVVFKlFcbhATnjLwUzz7GnXC649Q/exec',
     TIMEOUT: 15000,
     RETRY_COUNT: 3,
 };
