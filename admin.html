@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Kavling Kebun Maoslor</title>
+
+    <!-- Bootstrap 5 + SB Admin 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    </script>
+
+    <style>
+        :root {
+            --sidebar-width: 250px;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fc;
+        }
+        #wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        #sidebar-wrapper {
+            width: var(--sidebar-width);
+            background: #1a1c23;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        #sidebar-wrapper .sidebar-brand {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        #sidebar-wrapper .sidebar-brand span {
+            color: #4e73df;
+        }
+        #sidebar-wrapper .list-group-item {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.8rem 1.5rem;
+            transition: all 0.2s;
+        }
+        #sidebar-wrapper .list-group-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        #sidebar-wrapper .list-group-item.active {
+            background: #4e73df;
+            color: #fff;
+        }
+        #page-content-wrapper {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 20px;
+        }
+        .navbar-custom {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 12px 24px;
+            margin-bottom: 24px;
+        }
+        .card-stat {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .card-stat:hover {
+            transform: translateY(-4px);
+        }
+        .card-stat .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .table-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+        .btn-action {
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+        @media (max-width: 768px) {
+            #sidebar-wrapper {
+                transform: translateX(-100%);
+            }
+            #sidebar-wrapper.toggled {
+                transform: translateX(0);
+            }
+            #page-content-wrapper {
+                margin-left: 0;
+            }
+            .sidebar-toggle {
+                display: inline-block !important;
+            }
+        }
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #333;
+        }
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 30px;
+            padding: 6px 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .dataTables_wrapper .dataTables_length select {
+            border-radius: 30px;
+            padding: 4px 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <i class="fas fa-cubes me-2"></i>Kavling<span>Maoslor</span>
+            </div>
+            <div class="list-group list-group-flush mt-3">
+                <a href="#" class="list-group-item active" id="menuDashboard">
+                    <i class="fas fa-fw fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+                <a href="#" class="list-group-item" id="menuUnits">
+                    <i class="fas fa-fw fa-table me-2"></i>Data Kavling
+                </a>
+                <a href="#" class="list-group-item" id="menuBookings">
+                    <i class="fas fa-fw fa-clipboard-list me-2"></i>Booking
+                </a>
+                <a href="#" class="list-group-item" id="menuChatLog">
+                    <i class="fas fa-fw fa-comments me-2"></i>Chat Log
+                </a>
+                <a href="#" class="list-group-item" id="menuFollowUp">
+                    <i class="fas fa-fw fa-tasks me-2"></i>Follow Up
+                </a>
+                <hr class="mx-3" style="border-color: rgba(255,255,255,0.05);" />
+                <a href="index.html" class="list-group-item" target="_blank">
+                    <i class="fas fa-fw fa-globe me-2"></i>Lihat Website
+                </a>
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <!-- Navbar -->
+            <nav class="navbar-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="fw-bold fs-5 ms-2">Dashboard Kavling</span>
+                </div>
+                <div>
+                    <span class="text-muted small me-3"><i class="far fa-calendar-alt me-1"></i><span id="clockDisplay"></span></span>
+                    <span class="badge bg-success">Online</span>
+                </div>
+            </nav>
+
+            <!-- Stats Row -->
+            <div class="row g-4 mb-4" id="statsRow">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card-stat card p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small text-uppercase fw-bold">Total Unit</div>
+                                <div class="fs-3 fw-bold" id="statTotal">0</div>
+                            </div>
+                            <div class="icon-circle bg-primary bg-opacity-10 text-primary">
+                                <i class="fas fa-cubes"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card-stat card p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small text-uppercase fw-bold">Tersedia</div>
+                                <div class="fs-3 fw-bold text-success" id="statTersedia">0</div>
+                            </div>
+                            <div class="icon-circle bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card-stat card p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small text-uppercase fw-bold">Booking</div>
+                                <div class="fs-3 fw-bold text-warning" id="statBooking">0</div>
+                            </div>
+                            <div class="icon-circle bg-warning bg-opacity-10 text-warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card-stat card p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small text-uppercase fw-bold">Terjual</div>
+                                <div class="fs-3 fw-bold text-danger" id="statTerjual">0</div>
+                            </div>
+                            <div class="icon-circle bg-danger bg-opacity-10 text-danger">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="table-card">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <h5 class="fw-bold mb-0"><i class="fas fa-table me-2 text-primary"></i>Daftar Unit Kavling</h5>
+                    <button class="btn btn-primary btn-sm" id="btnAddUnit">
+                        <i class="fas fa-plus me-1"></i>Tambah Unit
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table id="unitsTable" class="table table-hover align-middle" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID Unit</th>
+                                <th>Luas (m²)</th>
+                                <th>Panjang (m)</th>
+                                <th>Lebar (m)</th>
+                                <th>Status</th>
+                                <th>Harga</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================================ -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js">
+    </script>
+
+    <script>
+        // ============================================================
+        //  KONFIGURASI API
+        // ============================================================
+        // Ganti URL ini dengan URL deployment Apps Script Anda
+        const API_BASE = 'https://script.google.com/macros/s/AKfycbyoBi6hrYIFYF12w9rETT_yffPMOCX0cK9SkR0qGKZuBcTDtRIXUPOsT4k3OHFHDWo/exec';
+
+        let unitsData = [];
+        let table;
+
+        // ============================================================
+        //  FUNGSI JSONP
+        // ============================================================
+        function jsonpRequest(url) {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'jsonp_callback_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+                const timeoutId = setTimeout(() => {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    reject(new Error('JSONP request timeout'));
+                }, 15000);
+
+                window[callbackName] = function(data) {
+                    clearTimeout(timeoutId);
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(data);
+                };
+
+                const script = document.createElement('script');
+                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+                script.onerror = function() {
+                    clearTimeout(timeoutId);
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    reject(new Error('JSONP request failed'));
+                };
+                document.body.appendChild(script);
+            });
+        }
+
+        // ============================================================
+        //  CRUD API
+        // ============================================================
+        async function loadUnits() {
+            try {
+                const data = await jsonpRequest(API_BASE + '?action=list');
+                if (data.error) throw new Error(data.error);
+                unitsData = data || [];
+                return unitsData;
+            } catch (err) {
+                console.error('Gagal load units:', err);
+                Swal.fire('Error', 'Gagal memuat data unit', 'error');
+                return [];
+            }
+        }
+
+        async function createUnit(data) {
+            try {
+                // Kirim via POST dengan JSONP (menggunakan parameter)
+                const params = new URLSearchParams({ action: 'create', ...data });
+                const result = await jsonpRequest(API_BASE + '?' + params.toString());
+                return result;
+            } catch (err) {
+                console.error('Gagal create:', err);
+                return { error: err.message };
+            }
+        }
+
+        async function updateUnit(index, data) {
+            try {
+                const params = new URLSearchParams({ action: 'update', index: index, ...data });
+                const result = await jsonpRequest(API_BASE + '?' + params.toString());
+                return result;
+            } catch (err) {
+                console.error('Gagal update:', err);
+                return { error: err.message };
+            }
+        }
+
+        async function deleteUnit(index) {
+            try {
+                const params = new URLSearchParams({ action: 'delete', index: index });
+                const result = await jsonpRequest(API_BASE + '?' + params.toString());
+                return result;
+            } catch (err) {
+                console.error('Gagal delete:', err);
+                return { error: err.message };
+            }
+        }
+
+        // ============================================================
+        //  RENDER TABLE
+        // ============================================================
+        function renderTable(data) {
+            if (table) {
+                table.clear().destroy();
+            }
+
+            table = $('#unitsTable').DataTable({
+                data: data,
+                responsive: true,
+                columns: [{
+                    data: 'id',
+                    render: function(data) {
+                        return '<span class="fw-bold">' + data + '</span>';
+                    }
+                }, { data: 'luas' }, { data: 'p' }, { data: 'l' }, {
+                    data: 'status',
+                    render: function(data) {
+                        const colors = {
+                            'Tersedia': 'success',
+                            'Booking': 'warning',
+                            'Terjual': 'danger'
+                        };
+                        return '<span class="badge bg-' + (colors[data] || 'secondary') + '">' + data +
+                            '</span>';
+                    }
+                }, { data: 'harga' }, {
+                    data: null,
+                    orderable: false,
+                    render: function(row, type, full) {
+                        // Simpan index asli dari array
+                        const idx = unitsData.indexOf(full);
+                        return `
+                                <button class="btn btn-sm btn-outline-primary btn-action btn-edit" data-index="${idx}" data-id="${full.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger btn-action btn-delete" data-index="${idx}" data-id="${full.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            `;
+                    }
+                }],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                },
+                order: [
+                    [0, 'asc']
+                ],
+                pageLength: 10,
+                lengthMenu: [
+                    [5, 10, 25, 50, -1],
+                    [5, 10, 25, 50, 'Semua']
+                ]
+            });
+
+            // Event listener untuk tombol edit & delete
+            $('#unitsTable tbody').on('click', '.btn-edit', function() {
+                const index = parseInt($(this).data('index'));
+                const row = unitsData[index];
+                if (row) openEditModal(row, index);
+            });
+
+            $('#unitsTable tbody').on('click', '.btn-delete', function() {
+                const index = parseInt($(this).data('index'));
+                const row = unitsData[index];
+                if (row) confirmDelete(row, index);
+            });
+        }
+
+        // ============================================================
+        //  UPDATE STATS
+        // ============================================================
+        function updateStats(data) {
+            const total = data.length;
+            const tersedia = data.filter(d => d.status === 'Tersedia').length;
+            const booking = data.filter(d => d.status === 'Booking').length;
+            const terjual = data.filter(d => d.status === 'Terjual').length;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statTersedia').textContent = tersedia;
+            document.getElementById('statBooking').textContent = booking;
+            document.getElementById('statTerjual').textContent = terjual;
+        }
+
+        // ============================================================
+        //  MODAL FORM (Tambah / Edit)
+        // ============================================================
+        function openAddModal() {
+            Swal.fire({
+                title: 'Tambah Unit Baru',
+                html: `
+                        <div class="text-start">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">ID Unit</label>
+                                <input id="swal-id" class="form-control" placeholder="Contoh: A1, B2, G1" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Luas (m²)</label>
+                                    <input id="swal-luas" class="form-control" type="number" step="0.01" placeholder="150" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Panjang (m)</label>
+                                    <input id="swal-p" class="form-control" type="number" step="0.01" placeholder="14.5" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Lebar (m)</label>
+                                    <input id="swal-l" class="form-control" type="number" step="0.01" placeholder="10" />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Status</label>
+                                <select id="swal-status" class="form-select">
+                                    <option value="Tersedia">Tersedia</option>
+                                    <option value="Booking">Booking</option>
+                                    <option value="Terjual">Terjual</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Harga</label>
+                                <input id="swal-harga" class="form-control" placeholder="Rp 60.000.000" />
+                            </div>
+                        </div>
+                    `,
+                showCancelButton: true,
+                confirmButtonText: 'Simpan',
+                cancelButtonText: 'Batal',
+                preConfirm: () => {
+                    const id = document.getElementById('swal-id').value.trim();
+                    const luas = document.getElementById('swal-luas').value.trim();
+                    const p = document.getElementById('swal-p').value.trim();
+                    const l = document.getElementById('swal-l').value.trim();
+                    const status = document.getElementById('swal-status').value;
+                    const harga = document.getElementById('swal-harga').value.trim();
+
+                    if (!id) { Swal.showValidationMessage('ID Unit wajib diisi'); return; }
+                    if (!luas) { Swal.showValidationMessage('Luas wajib diisi'); return; }
+                    if (!p) { Swal.showValidationMessage('Panjang wajib diisi'); return; }
+                    if (!l) { Swal.showValidationMessage('Lebar wajib diisi'); return; }
+                    if (!harga) { Swal.showValidationMessage('Harga wajib diisi'); return; }
+
+                    return { id, luas, p, l, status, harga };
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const data = result.value;
+                    const resp = await createUnit(data);
+                    if (resp.success) {
+                        Swal.fire('Sukses', 'Unit berhasil ditambahkan', 'success');
+                        refreshData();
+                    } else {
+                        Swal.fire('Error', resp.error || 'Gagal menambahkan unit', 'error');
+                    }
+                }
+            });
+        }
+
+        function openEditModal(row, index) {
+            Swal.fire({
+                title: 'Edit Unit ' + row.id,
+                html: `
+                        <div class="text-start">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">ID Unit</label>
+                                <input id="swal-id" class="form-control" value="${row.id || ''}" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Luas (m²)</label>
+                                    <input id="swal-luas" class="form-control" type="number" step="0.01" value="${row.luas || ''}" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Panjang (m)</label>
+                                    <input id="swal-p" class="form-control" type="number" step="0.01" value="${row.p || ''}" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Lebar (m)</label>
+                                    <input id="swal-l" class="form-control" type="number" step="0.01" value="${row.l || ''}" />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Status</label>
+                                <select id="swal-status" class="form-select">
+                                    <option value="Tersedia" ${row.status === 'Tersedia' ? 'selected' : ''}>Tersedia</option>
+                                    <option value="Booking" ${row.status === 'Booking' ? 'selected' : ''}>Booking</option>
+                                    <option value="Terjual" ${row.status === 'Terjual' ? 'selected' : ''}>Terjual</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Harga</label>
+                                <input id="swal-harga" class="form-control" value="${row.harga || ''}" />
+                            </div>
+                        </div>
+                    `,
+                showCancelButton: true,
+                confirmButtonText: 'Update',
+                cancelButtonText: 'Batal',
+                preConfirm: () => {
+                    const id = document.getElementById('swal-id').value.trim();
+                    const luas = document.getElementById('swal-luas').value.trim();
+                    const p = document.getElementById('swal-p').value.trim();
+                    const l = document.getElementById('swal-l').value.trim();
+                    const status = document.getElementById('swal-status').value;
+                    const harga = document.getElementById('swal-harga').value.trim();
+
+                    if (!id) { Swal.showValidationMessage('ID Unit wajib diisi'); return; }
+                    if (!luas) { Swal.showValidationMessage('Luas wajib diisi'); return; }
+                    if (!p) { Swal.showValidationMessage('Panjang wajib diisi'); return; }
+                    if (!l) { Swal.showValidationMessage('Lebar wajib diisi'); return; }
+                    if (!harga) { Swal.showValidationMessage('Harga wajib diisi'); return; }
+
+                    return { id, luas, p, l, status, harga };
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const data = result.value;
+                    const resp = await updateUnit(index, data);
+                    if (resp.success) {
+                        Swal.fire('Sukses', 'Unit berhasil diupdate', 'success');
+                        refreshData();
+                    } else {
+                        Swal.fire('Error', resp.error || 'Gagal mengupdate unit', 'error');
+                    }
+                }
+            });
+        }
+
+        function confirmDelete(row, index) {
+            Swal.fire({
+                title: 'Hapus Unit ' + row.id + '?',
+                text: 'Data akan dihapus secara permanen!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const resp = await deleteUnit(index);
+                    if (resp.success) {
+                        Swal.fire('Terhapus!', 'Unit berhasil dihapus.', 'success');
+                        refreshData();
+                    } else {
+                        Swal.fire('Error', resp.error || 'Gagal menghapus unit', 'error');
+                    }
+                }
+            });
+        }
+
+        // ============================================================
+        //  REFRESH DATA
+        // ============================================================
+        async function refreshData() {
+            const data = await loadUnits();
+            if (data && data.length > 0) {
+                unitsData = data;
+                renderTable(data);
+                updateStats(data);
+            } else {
+                unitsData = [];
+                renderTable([]);
+                updateStats([]);
+            }
+        }
+
+        // ============================================================
+        //  CLOCK
+        // ============================================================
+        function updateClock() {
+            const now = new Date();
+            const str = now.toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit',
+                minute: '2-digit', second: '2-digit' });
+            document.getElementById('clockDisplay').textContent = str;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ============================================================
+        //  SIDEBAR TOGGLE (Mobile)
+        // ============================================================
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar-wrapper').classList.toggle('toggled');
+        });
+
+        // ============================================================
+        //  INISIALISASI
+        // ============================================================
+        $(document).ready(async function() {
+            await refreshData();
+
+            // Tombol tambah unit
+            $('#btnAddUnit').on('click', openAddModal);
+
+            // Menu sidebar (hanya untuk demo, belum implementasi halaman lain)
+            $('#menuDashboard, #menuUnits').on('click', function(e) {
+                e.preventDefault();
+                $('.list-group-item').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
