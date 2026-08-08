@@ -17,27 +17,29 @@ let currentWaitingUnitData = null;
 // Ambil semua unit dari Google Sheets
 async function loadUnits() {
     try {
-        const res = await fetch(`${API_BASE}?action=list&sheet=units`);
+        const res = await fetch(`${API_BASE}?action=list&sheet=units`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         if (data.error) throw new Error(data.error);
         dataTanahTable = data;
         console.log('✅ Data unit dimuat:', dataTanahTable.length, 'unit');
         
-        // Update global agar bisa diakses oleh modul Three.js
         window.dataTanahTable = dataTanahTable;
-        
-        // Render ulang tabel
         renderTable();
-        
-        // Rebuild denah 3D
         if (typeof window.rebuildDenah === 'function') {
             window.rebuildDenah();
         }
-        
         return data;
     } catch (err) {
         console.error('❌ Gagal memuat unit:', err);
-        alert('Gagal memuat data unit. Periksa koneksi atau API.');
+        document.getElementById('dataTanahBody').innerHTML = 
+            '<tr><td colspan="6" class="text-center py-4 text-red-400">Gagal memuat data. Periksa koneksi atau refresh.</td></tr>';
         return [];
     }
 }
@@ -47,6 +49,7 @@ async function logChat(sender, text, isFromMe = false, source = 'web') {
     try {
         await fetch(API_BASE, {
             method: 'POST',
+            mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 action: 'chat_log',
@@ -66,6 +69,7 @@ async function submitBooking(unitId, nama, email, wa, status = 'waiting') {
     try {
         const res = await fetch(API_BASE, {
             method: 'POST',
+            mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 action: 'booking',
@@ -88,6 +92,7 @@ async function askAI(prompt) {
     try {
         const res = await fetch(API_BASE, {
             method: 'POST',
+            mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 action: 'ai',
