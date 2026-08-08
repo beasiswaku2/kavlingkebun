@@ -4,7 +4,6 @@
 // ============================================================
 
 // ========== KONFIGURASI API ==========
-// Ganti dengan URL Apps Script Anda
 const API_BASE = 'https://script.google.com/macros/s/AKfycbzG0uJWfvchg1yI1n_w8Diw4s9-i1V1UIIlwwZ7LCZIMwMFmF_5pLpog02gAoMtpIuxtg/exec';
 
 // ========== VARIABEL GLOBAL ==========
@@ -30,7 +29,7 @@ async function loadUnits() {
         // Render ulang tabel
         renderTable();
         
-        // Rebuild denah 3D (jika ada fungsi rebuildDenah di modul)
+        // Rebuild denah 3D
         if (typeof window.rebuildDenah === 'function') {
             window.rebuildDenah();
         }
@@ -46,9 +45,16 @@ async function loadUnits() {
 // Log chat ke Google Sheets
 async function logChat(sender, text, isFromMe = false, source = 'web') {
     try {
-        await fetch(`${API_BASE}?action=chat_log`, {
+        await fetch(API_BASE, {
             method: 'POST',
-            body: JSON.stringify({ sender, text, isFromMe, source })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'chat_log',
+                sender: sender,
+                text: text,
+                isFromMe: isFromMe ? 'Yes' : 'No',
+                source: source
+            })
         });
     } catch (err) {
         console.error('Gagal log chat:', err);
@@ -58,9 +64,17 @@ async function logChat(sender, text, isFromMe = false, source = 'web') {
 // Submit booking/waiting list
 async function submitBooking(unitId, nama, email, wa, status = 'waiting') {
     try {
-        const res = await fetch(`${API_BASE}?action=booking`, {
+        const res = await fetch(API_BASE, {
             method: 'POST',
-            body: JSON.stringify({ unit_id: unitId, nama, email, wa, status })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'booking',
+                unit_id: unitId,
+                nama: nama,
+                email: email,
+                wa: wa,
+                status: status
+            })
         });
         return await res.json();
     } catch (err) {
@@ -72,9 +86,13 @@ async function submitBooking(unitId, nama, email, wa, status = 'waiting') {
 // Tanya AI (Groq) via proxy Apps Script
 async function askAI(prompt) {
     try {
-        const res = await fetch(`${API_BASE}?action=ai`, {
+        const res = await fetch(API_BASE, {
             method: 'POST',
-            body: JSON.stringify({ prompt })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'ai',
+                prompt: prompt
+            })
         });
         const data = await res.json();
         return data.answer || data.error || 'Maaf, saya tidak bisa menjawab.';
@@ -143,11 +161,11 @@ function getBookingFee(price) {
 
 function calculateBothSimulations(unitPrice) {
     const price = parsePrice(unitPrice);
-    const dpPercent = 20; // bisa ambil dari config nanti
+    const dpPercent = 20;
     const dp = Math.round(price * (dpPercent / 100));
     const principal = price - dp;
     const bookingFee = getBookingFee(price);
-    const interestRate = 12; // 12% flat per tahun
+    const interestRate = 12;
 
     const bunga2tahun = Math.round(principal * (interestRate / 100) * 2);
     const total2tahun = principal + bunga2tahun;
@@ -219,7 +237,6 @@ window.submitWaitingList = async function() {
     if (result.success) {
         alert('✅ Pendaftaran waiting list berhasil!');
         closeWaitingListModal();
-        // kirim notifikasi ke admin via WhatsApp
         const message = `Halo Admin, ada pendaftar waiting list unit ${currentWaitingUnitData.id}. Nama: ${nama}, WA: ${wa}`;
         window.open(`https://wa.me/6287788526410?text=${encodeURIComponent(message)}`, '_blank');
     } else {
@@ -351,7 +368,6 @@ function removeTypingIndicator() {
     if (indicator) indicator.remove();
 }
 
-// Render menu utama
 function renderMainMenu() {
     return `
         <strong>📋 Menu Utama — Kavling Maoslor</strong><br/><br/>
@@ -366,7 +382,6 @@ function renderMainMenu() {
     `;
 }
 
-// Render unit detail
 function renderUnitDetail(unit) {
     const statusEmoji = unit.status === 'Tersedia' ? '✅' : (unit.status === 'Booking' ? '⏳' : '❌');
     const statusBadge = unit.status === 'Tersedia' ? 'badge-tersedia' : (unit.status === 'Booking' ? 'badge-booking' : 'badge-terjual');
@@ -377,20 +392,19 @@ function renderUnitDetail(unit) {
     msg += `<strong>📋 Sub-Menu:</strong><br/>`;
     let btns = '';
     if (unit.status === 'Tersedia') {
-        btns += `<span class="chat-action-btn primary" onclick="quickAsk('simulasi ${unit.id}')">💳 Simulasi</span>`;
-        btns += `<span class="chat-action-btn" onclick="quickAsk('booking ${unit.id}')">📋 Booking</span>`;
+        btns += `<span class="chat-action-btn primary" onclick="window.quickAsk('simulasi ${unit.id}')">💳 Simulasi</span>`;
+        btns += `<span class="chat-action-btn" onclick="window.quickAsk('booking ${unit.id}')">📋 Booking</span>`;
     } else if (unit.status === 'Booking') {
-        btns += `<span class="chat-action-btn warning" onclick="quickAsk('waiting ${unit.id}')">⏳ Daftar Tunggu</span>`;
+        btns += `<span class="chat-action-btn warning" onclick="window.quickAsk('waiting ${unit.id}')">⏳ Daftar Tunggu</span>`;
     } else {
         btns += `<span class="chat-action-btn" style="opacity:0.5;cursor:default;">❌ Terjual</span>`;
     }
-    btns += `<span class="chat-action-btn" onclick="quickAsk('denah ${unit.id}')">🗺️ Denah</span>`;
-    btns += `<span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>`;
+    btns += `<span class="chat-action-btn" onclick="window.quickAsk('denah ${unit.id}')">🗺️ Denah</span>`;
+    btns += `<span class="back-btn" onclick="window.quickAsk('menu')">🔙 Kembali</span>`;
     msg += `<div class="chat-actions">${btns}</div>`;
     return msg;
 }
 
-// Render daftar unit tersedia
 function renderAvailableUnits() {
     const avail = dataTanahTable.filter(u => u.status === 'Tersedia');
     if (avail.length === 0) return 'Maaf, saat ini tidak ada unit tersedia. 😔';
@@ -400,7 +414,6 @@ function renderAvailableUnits() {
     return msg;
 }
 
-// Render simulasi
 function renderSimulation(unitId) {
     const unit = findUnit(unitId);
     if (!unit) return `❌ Unit ${unitId} tidak ditemukan.`;
@@ -408,7 +421,6 @@ function renderSimulation(unitId) {
         return `❌ Unit ${unitId} saat ini berstatus <strong>${unit.status}</strong>, tidak bisa disimulasikan.`;
     }
     const calc = calculateBothSimulations(unit.harga);
-    // Buka modal simulasi di web
     setTimeout(() => {
         if (typeof window.openSimulationModal === 'function') {
             window.openSimulationModal(unit.id, unit.harga);
@@ -429,7 +441,6 @@ function renderSimulation(unitId) {
     `;
 }
 
-// Render booking info
 function renderBookingInfo(unitId) {
     const unit = findUnit(unitId);
     if (!unit) return `❌ Unit ${unitId} tidak ditemukan.`;
@@ -440,9 +451,9 @@ function renderBookingInfo(unitId) {
             Unit ini sedang dalam proses booking oleh calon pembeli lain.<br/>
             Namun Anda bisa mendaftar <strong>Daftar Tunggu Prioritas</strong>.<br/><br/>
             <div class="chat-actions">
-                <span class="chat-action-btn warning" onclick="quickAsk('waiting ${unit.id}')">📋 Daftar Tunggu</span>
-                <span class="chat-action-btn" onclick="quickAsk('unit ${unit.id}')">🔍 Detail</span>
-                <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
+                <span class="chat-action-btn warning" onclick="window.quickAsk('waiting ${unit.id}')">📋 Daftar Tunggu</span>
+                <span class="chat-action-btn" onclick="window.quickAsk('unit ${unit.id}')">🔍 Detail</span>
+                <span class="back-btn" onclick="window.quickAsk('menu')">🔙 Kembali</span>
             </div>
         `;
     }
@@ -456,14 +467,13 @@ function renderBookingInfo(unitId) {
         4️⃣ Tanda jadi dan cicilan pertama dibayar di awal.<br/><br/>
         📞 <strong>Kontak:</strong> 0877-8852-6410 (Ribut Nurdiansyah)<br/><br/>
         <div class="chat-actions">
-            <span class="chat-action-btn primary" onclick="quickAsk('simulasi ${unit.id}')">💳 Simulasi</span>
-            <span class="chat-action-btn" onclick="quickAsk('kontak')">📞 Hubungi Marketing</span>
-            <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
+            <span class="chat-action-btn primary" onclick="window.quickAsk('simulasi ${unit.id}')">💳 Simulasi</span>
+            <span class="chat-action-btn" onclick="window.quickAsk('kontak')">📞 Hubungi Marketing</span>
+            <span class="back-btn" onclick="window.quickAsk('menu')">🔙 Kembali</span>
         </div>
     `;
 }
 
-// Render waiting list
 function renderWaitingList(unitId) {
     const unit = findUnit(unitId);
     if (!unit) return `❌ Unit ${unitId} tidak ditemukan.`;
@@ -471,7 +481,6 @@ function renderWaitingList(unitId) {
         return `✅ Unit ${unit.id} masih <strong>TERSEDIA</strong>, tidak perlu daftar tunggu. Silakan booking langsung!`;
     }
     if (unit.status === 'Terjual') return `❌ Unit ${unit.id} sudah <strong>TERJUAL</strong>.`;
-    // Booking
     setTimeout(() => {
         if (typeof window.openWaitingListModal === 'function') {
             window.openWaitingListModal(unit.id, unit.harga);
@@ -485,7 +494,6 @@ function renderWaitingList(unitId) {
     `;
 }
 
-// Render lokasi
 function renderLocation() {
     return `
         <strong>📍 Lokasi & Akses</strong><br/><br/>
@@ -499,7 +507,6 @@ function renderLocation() {
     `;
 }
 
-// Render kontak
 function renderContact() {
     return `
         <strong>📞 Hubungi Marketing</strong><br/><br/>
@@ -508,13 +515,12 @@ function renderContact() {
         Saya siap bantu kapan saja. 😊<br/>
         Klik tombol di bawah untuk chat langsung.<br/><br/>
         <div class="chat-actions">
-            <span class="chat-action-btn primary" onclick="quickAsk('chatwa')">💬 Chat WhatsApp</span>
-            <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
+            <span class="chat-action-btn primary" onclick="window.quickAsk('chatwa')">💬 Chat WhatsApp</span>
+            <span class="back-btn" onclick="window.quickAsk('menu')">🔙 Kembali</span>
         </div>
     `;
 }
 
-// Render bantuan
 function renderHelp() {
     return `
         <strong>❓ Bantuan & FAQ</strong><br/><br/>
@@ -532,7 +538,6 @@ function renderHelp() {
     `;
 }
 
-// Navigasi ke denah
 function navigateToDenah(unitId) {
     const section = document.getElementById('denah');
     if (section) {
@@ -565,7 +570,6 @@ function navigateToDenah(unitId) {
 window.processChatQuery = async function(query) {
     showTypingIndicator();
     const lower = query.trim().toLowerCase();
-    const words = lower.split(/\s+/);
     const unitRegex = /\b([a-z]\d+)\b/i;
     const unitMatch = lower.match(unitRegex);
     const detectedUnitId = unitMatch ? unitMatch[1].toUpperCase() : null;
@@ -749,7 +753,7 @@ window.processChatQuery = async function(query) {
         return;
     }
 
-    // === DETEKSI UNIT (kode unit saja) ===
+    // === DETEKSI UNIT ===
     if (isUnitDetail) {
         const unit = findUnit(detectedUnitId);
         if (unit) {
@@ -764,7 +768,7 @@ window.processChatQuery = async function(query) {
         }
     }
 
-    // === JIKA SEDANG MENUNGGU INPUT UNIT ===
+    // === MENUNGGU INPUT UNIT ===
     if (chatState.waitingForUnit) {
         const possibleUnit = findUnit(query);
         if (possibleUnit) {
@@ -822,7 +826,6 @@ window.processChatQuery = async function(query) {
             removeTypingIndicator();
             addChatMessage(answer, 'bot');
         }, 300);
-        // Log chat
         await logChat('web-user', query, false, 'web');
         await logChat('web-user', answer, true, 'web');
     } catch (err) {
@@ -870,85 +873,14 @@ window.quickAsk = function(query) {
     processChatQuery(query);
 };
 
-// Enter key support
-document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('chatbotInput');
-    if (input) {
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') window.sendChatMessage();
-        });
-    }
-});
-
 // ========== INISIALISASI ==========
 
 document.addEventListener('DOMContentLoaded', async function() {
-    // Load data unit
     await loadUnits();
-    
-    // Set welcome time
     setWelcomeTime();
-    
-    // Reset chat state
     chatState.currentMenu = 'main';
     chatState.currentUnitId = null;
     chatState.waitingForUnit = false;
-    
-    // Mobile menu
-    const mobileMenuButton = document.getElementById('mobileMenuButton');
-    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
-    const mobileMenuClose = document.getElementById('mobileMenuClose');
-    if (mobileMenuButton && mobileMenuPanel) {
-        mobileMenuButton.addEventListener('click', function() {
-            mobileMenuPanel.classList.toggle('hidden');
-            document.body.style.overflow = mobileMenuPanel.classList.contains('hidden') ? 'auto' : 'hidden';
-        });
-        if (mobileMenuClose) {
-            mobileMenuClose.addEventListener('click', function() {
-                mobileMenuPanel.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            });
-        }
-        document.querySelectorAll('.mobile-menu-link').forEach(l => {
-            l.addEventListener('click', function() {
-                mobileMenuPanel.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            });
-        });
-    }
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
-        });
-    });
-
-    // Modal close on overlay click
-    document.getElementById('simulationModal')?.addEventListener('click', function(e) {
-        if (e.target === this) closeSimulationModal();
-    });
-    document.getElementById('waitingListModal')?.addEventListener('click', function(e) {
-        if (e.target === this) closeWaitingListModal();
-    });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeSimulationModal();
-            closeWaitingListModal();
-        }
-    });
-
-    // Initialize AOS
-    if (typeof AOS !== 'undefined') {
-        AOS.init({ duration: 1000, once: true });
-    }
-
-    // Render table
     renderTable();
-
-    // Lucide icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 });
