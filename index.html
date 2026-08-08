@@ -3,35 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Kavling Kebun Maoslor - Investasi Kebun Hidroponik Cilacap | Harga Mulai 35jt</title>
-
+    <title>Kavling Kebun Maoslor - Investasi Kebun Hidroponik Cilacap</title>
     <!-- Meta SEO -->
-    <meta name="description" content="Kavling Kebun Maoslor - Investasi kavling kebun hidroponik di Maos, Cilacap dengan harga mulai Rp 35 juta. Akses jalan mudah, dekat fasilitas umum, ROI >100% dalam 1 tahun." />
-    <meta name="keywords" content="kavling kebun maoslor, tanah kavling cilacap, investasi kebun hidroponik, kavling murah maos" />
-    <meta name="author" content="Kavling Kebun Maoslor" />
+    <meta name="description" content="Kavling Kebun Maoslor - Investasi kavling kebun hidroponik di Maos, Cilacap dengan harga mulai Rp 35 juta." />
     <link rel="canonical" href="https://beasiswaku2.github.io/beasiswaku2.github.io/#denah" />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Kavling Kebun Maoslor" />
     <meta property="og:title" content="Kavling Kebun Maoslor - Investasi Kebun Hidroponik Cilacap" />
-    <meta property="og:description" content="Kavling kebun hidroponik strategis di Maos, Cilacap. Harga terjangkau mulai Rp 35 jt." />
     <meta property="og:image" content="https://img.youtube.com/vi/KAiCPSpSv00/maxresdefault.jpg" />
-    <meta property="og:url" content="https://beasiswaku2.github.io/beasiswaku2.github.io/#denah" />
-    <meta property="og:locale" content="id_ID" />
-
-    <!-- Twitter Card -->
+    <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Kavling Kebun Maoslor - Investasi Kebun Hidroponik Cilacap" />
-    <meta name="twitter:description" content="Kavling kebun hidroponik di Maos, Cilacap. Harga mulai Rp 35 juta." />
-    <meta name="twitter:image" content="https://img.youtube.com/vi/KAiCPSpSv00/maxresdefault.jpg" />
 
-    <!-- Geo Tagging -->
-    <meta name="geo.region" content="ID-JT" />
-    <meta name="geo.placename" content="Maos, Cilacap, Jawa Tengah" />
-    <meta name="geo.position" content="-7.592451;109.142820" />
-    <meta name="ICBM" content="-7.592451, 109.142820" />
-
+    <!-- Tailwind, Fonts, AOS, Lucide -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -39,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet" />
 
     <style>
+        /* ===== RESET & BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -47,21 +29,29 @@
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
-        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        .text-gradient { background: linear-gradient(180deg, #ffffff 0%, #888888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         section { padding: 60px 20px; }
         @media (min-width: 768px) { section { padding: 100px 20px; } }
 
-        /* Denah 3D */
+        /* ===== DENAH 3D ===== */
         #denah-canvas-container {
             width: 100%;
             height: 400px;
             border-radius: 20px;
             overflow: hidden;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
             background: #050505;
             cursor: pointer;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         @media (min-width: 768px) { #denah-canvas-container { height: 500px; border-radius: 30px; } }
         @media (min-width: 1024px) { #denah-canvas-container { height: 700px; border-radius: 40px; } }
@@ -81,32 +71,19 @@
         @media (min-width: 768px) {
             .ui-panel-denah { top: 15px; left: 20px; padding: 15px 25px; border-radius: 20px; }
         }
-        #tooltip-denah {
-            position: fixed;
-            display: none;
-            padding: 12px;
-            background: rgba(10,10,10,0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            color: white;
-            font-size: 12px;
-            z-index: 1000;
-            pointer-events: none;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            min-width: 200px;
-            max-width: 280px;
+        .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
         }
-        @media (min-width: 768px) {
-            #tooltip-denah { padding: 15px; font-size: 13px; min-width: 220px; border-radius: 16px; }
-        }
-        .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
         @media (min-width: 768px) { .dot { width: 10px; height: 10px; margin-right: 5px; } }
         .bg-tersedia { background-color: #22c55e; }
         .bg-booking { background-color: #eab308; }
         .bg-terjual { background-color: #ef4444; }
 
-        /* Modal */
+        /* ===== MODAL ===== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -138,7 +115,7 @@
         .modal-overlay.active .modal-content { transform: translateY(0); }
         @media (max-width: 640px) { .modal-content { max-width: 100%; border: none; } }
 
-        /* Chatbot */
+        /* ===== CHATBOT ===== */
         .chatbot-nav-container {
             position: fixed !important;
             bottom: 20px !important;
@@ -207,6 +184,7 @@
         .chat-messages::-webkit-scrollbar { width: 5px; }
         .chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
         .chat-messages::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+
         .message { margin-bottom: 18px; display: flex; flex-direction: column; animation: messagePop 0.3s ease; }
         @keyframes messagePop { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .message.user { align-items: flex-end; }
@@ -220,9 +198,24 @@
             word-wrap: break-word;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .message.user .message-bubble { background: linear-gradient(135deg, #059669, #10b981); color: white; border-bottom-right-radius: 4px; }
-        .message.bot .message-bubble { background: rgba(30,30,30,0.95); border: 1px solid rgba(16,185,129,0.3); color: #f3f4f6; border-bottom-left-radius: 4px; }
-        .message-time { font-size: 10px; color: #6b7280; margin-top: 5px; margin-left: 12px; margin-right: 12px; }
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .message.bot .message-bubble {
+            background: rgba(30,30,30,0.95);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #f3f4f6;
+            border-bottom-left-radius: 4px;
+        }
+        .message-time {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 5px;
+            margin-left: 12px;
+            margin-right: 12px;
+        }
         .chatbot-status {
             display: flex;
             align-items: center;
@@ -258,6 +251,7 @@
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; background: #059669; }
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; background: #10b981; }
         @keyframes typing { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
         .chatbot-input-area {
             display: flex;
             gap: 10px;
@@ -309,6 +303,7 @@
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .chatbot-floating-btn:hover { transform: scale(1.08); }
 
+        /* ===== BADGE & ACTION ===== */
         .badge-status { display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 11px; font-weight: 700; margin-top: 4px; }
         .badge-tersedia { background: rgba(34,197,94,0.25); color: #22c55e; border: 1px solid #22c55e; }
         .badge-booking { background: rgba(234,179,8,0.25); color: #eab308; border: 1px solid #eab308; }
@@ -344,6 +339,7 @@
         }
         .back-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .chatbot-nav-panel { width: 340px !important; right: 10px !important; bottom: 80px !important; }
             .chatbot-nav-container { bottom: 20px !important; right: 10px !important; }
@@ -354,43 +350,33 @@
         .section-highlight { animation: highlightPulse 1.5s ease 2; box-shadow: 0 0 0 4px rgba(16,185,129,0.5); }
         @keyframes highlightPulse { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); } 50% { box-shadow: 0 0 0 15px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
         .unit-highlight { background: rgba(16,185,129,0.3) !important; border: 2px solid #10b981 !important; transition: all 0.3s ease; }
-        .concept-box { background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(34,197,94,0.05) 100%); border-left: 4px solid #22c55e; transition: transform 0.3s ease; }
-        .concept-box:hover { transform: translateY(-5px); }
-        details>summary { list-style: none; cursor: pointer; position: relative; padding-right: 30px; }
-        details>summary::-webkit-details-marker { display: none; }
-        details>summary::after { content: "+"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-size: 1.5rem; transition: transform 0.3s; }
-        details[open]>summary::after { content: "−"; }
-    </style>
 
-    <!-- Schema Markup -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": ["RealEstateAgent", "LocalBusiness"],
-        "name": "Kavling Kebun Maoslor",
-        "description": "Jual kavling kebun hidroponik di Maos Cilacap dengan harga terjangkau mulai Rp 35 juta.",
-        "image": "https://img.youtube.com/vi/KAiCPSpSv00/maxresdefault.jpg",
-        "priceRange": "$$",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Maoslor, Maos",
-            "addressLocality": "Maos",
-            "addressRegion": "Jawa Tengah",
-            "postalCode": "53272",
-            "addressCountry": "ID"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "-7.592451",
-            "longitude": "109.142820"
-        },
-        "telephone": "+62-877-8852-6410",
-        "url": "https://beasiswaku2.github.io/beasiswaku2.github.io/#denah"
-    }
-    </script>
+        /* ===== VIDEO, FAQ, KONTAK, FOOTER ===== */
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 16px 0;
+        }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question {
+            font-weight: 600;
+            color: #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-top: 8px;
+            display: none;
+        }
+        .faq-answer.open { display: block; }
+        .faq-icon { transition: transform 0.3s; }
+        .faq-icon.open { transform: rotate(180deg); }
+    </style>
 </head>
 <body>
-
     <!-- ===== NAVBAR ===== -->
     <nav class="fixed w-full z-[100] px-4 py-4 md:px-6 md:py-6">
         <div class="max-w-6xl mx-auto flex justify-between items-center glass px-4 py-3 md:px-8 md:py-4 rounded-2xl md:rounded-3xl">
@@ -409,6 +395,7 @@
                 <a href="#kontak">Info & Pemasaran</a>
             </div>
         </div>
+        <!-- Mobile Menu Panel -->
         <div id="mobileMenuPanel" class="md:hidden fixed inset-0 bg-black/95 backdrop-blur-lg z-[99] hidden">
             <div class="flex flex-col items-center justify-center h-full gap-8 text-lg">
                 <button id="mobileMenuClose" class="absolute top-6 right-6 text-white" aria-label="Tutup Menu">
@@ -424,15 +411,7 @@
         </div>
     </nav>
 
-    <div id="tooltip-denah">
-        <div id="t-unit" class="text-lg md:text-xl font-extrabold text-indigo-400">UNIT --</div>
-        <div class="text-gray-300 text-sm md:text-base">
-            <span id="t-luas-dimensi" class="text-white font-semibold">--</span>
-        </div>
-        <div id="t-harga" class="text-base md:text-lg font-bold text-white">--</div>
-    </div>
-
-    <!-- ===== HOME ===== -->
+    <!-- ===== HOME SECTION ===== -->
     <section id="home" class="min-h-[60vh] flex items-center justify-center py-16 md:py-20">
         <div class="max-w-7xl mx-auto text-center px-4">
             <div data-aos="fade-up" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-indigo-500/20 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-6 border border-emerald-500/30">
@@ -444,8 +423,7 @@
             <p data-aos="fade-up" data-aos-delay="100" class="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
                 <strong class="text-white">Kemudahan memiliki aset tanah:</strong> Tanpa ribet, tanpa bunga bank yang kompetitif.
                 Kavling Kebun Maoslor kini hadir dengan <span class="text-emerald-400 font-semibold">Sistem Cicilan Fleksibel</span>
-                langsung ke developer. Cukup dengan <span class="text-emerald-400 font-semibold">DP 20%</span>,
-                Anda sudah bisa mengamankan unit dan mulai merencanakan kebun hidroponik Anda.
+                langsung ke developer. Cukup dengan <span class="text-emerald-400 font-semibold">DP 20%</span>, Anda sudah bisa mengamankan unit.
             </p>
             <div data-aos="fade-up" data-aos-delay="200" class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
                 <div class="glass p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
@@ -453,30 +431,30 @@
                         <i data-lucide="calendar" class="w-5 h-5 text-emerald-400"></i>
                     </div>
                     <h3 class="text-white font-bold text-sm mb-2">Tenor 1-3 Tahun</h3>
-                    <p class="text-gray-400 text-xs">Pilihan jangka waktu cicilan yang fleksibel sesuai kemampuan keuangan Anda.</p>
+                    <p class="text-gray-400 text-xs">Pilihan jangka waktu cicilan yang fleksibel.</p>
                 </div>
                 <div class="glass p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5">
                     <div class="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
                         <i data-lucide="wallet" class="w-5 h-5 text-indigo-400"></i>
                     </div>
                     <h3 class="text-white font-bold text-sm mb-2">DP Terjangkau</h3>
-                    <p class="text-gray-400 text-xs">Cukup bayar DP 20% dari harga kavling, sisa dapat diangsur.</p>
+                    <p class="text-gray-400 text-xs">Cukup bayar DP 20% dari harga kavling.</p>
                 </div>
                 <div class="glass p-4 rounded-xl border border-yellow-500/20 bg-yellow-500/5">
                     <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
                         <i data-lucide="check-circle" class="w-5 h-5 text-yellow-400"></i>
                     </div>
                     <h3 class="text-white font-bold text-sm mb-2">Pasti Disetujui</h3>
-                    <p class="text-gray-400 text-xs">Sistem cicilan internal langsung ke manajemen. Tanpa BI Checking.</p>
+                    <p class="text-gray-400 text-xs">Sistem cicilan internal, tanpa BI Checking.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== DENAH ===== -->
+    <!-- ===== DENAH SECTION ===== -->
     <section id="denah" class="bg-[#080808]">
         <div class="max-w-6xl mx-auto px-4">
-            <div data-aos="zoom-in" id="denah-canvas-container" role="img" aria-label="Denah 3D Interaktif Kavling Kebun Maoslor">
+            <div data-aos="zoom-in" id="denah-canvas-container" role="img" aria-label="Denah 3D Interaktif">
                 <div class="ui-panel-denah">
                     <div class="flex gap-2 md:gap-4 mt-1 md:mt-2 text-xs uppercase tracking-widest font-bold">
                         <span class="flex items-center"><span class="dot bg-tersedia"></span> Tersedia</span>
@@ -487,32 +465,26 @@
                         <p class="text-white text-sm md:text-[20px]">Arahkan kursor dan klik unit untuk info Simulasi Pembayaran.</p>
                     </div>
                 </div>
-                <!-- Placeholder akan diganti oleh Three.js -->
-                <div id="denah-placeholder" class="flex items-center justify-center h-full text-gray-500 text-sm">
-                    Memuat denah...
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== HARGA ===== -->
+    <!-- ===== HARGA SECTION ===== -->
     <section id="harga" class="py-12 md:py-20">
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="text-center mb-8 md:mb-12">
-                <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-gradient">Daftar Harga Cicilan Per Unit Kavling Kebun Maoslor</h2>
+                <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-gradient">Daftar Harga Cicilan Per Unit</h2>
                 <p data-aos="fade-up" data-aos-delay="100" class="text-sm md:text-base text-gray-400 px-4">
-                    Pilih unit impian Anda. Klik tombol "Simulasi" untuk melihat detail atau "Waiting List" jika unit sedang booking.
+                    Pilih unit impian Anda. Klik tombol "Simulasi" untuk melihat detail.
                 </p>
             </div>
             <div class="flex flex-col md:flex-row justify-between items-center mb-4 md:mb-8 gap-3 md:gap-4">
-                <button onclick="downloadPDF();" class="bg-blue-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl font-bold text-sm md:text-base transition flex items-center gap-2 shadow-lg shadow-green-500/20 touch-friendly">
-                    <i data-lucide="file-text" class="w-3 h-3 md:w-4 md:h-4"></i>
-                    <span class="hidden sm:inline">Download Daftar Harga (PDF)</span>
-                    <span class="sm:hidden">Download PDF</span>
+                <button onclick="window.downloadPDF();" class="bg-blue-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl font-bold text-sm md:text-base transition flex items-center gap-2 shadow-lg shadow-green-500/20 touch-friendly">
+                    <i data-lucide="file-text" class="w-3 h-3 md:w-4 md:h-4"></i> Download PDF
                 </button>
                 <div class="relative w-full md:w-64">
                     <i data-lucide="search" class="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-gray-500 w-3 h-3 md:w-4 md:h-4"></i>
-                    <input type="text" id="searchUnit" placeholder="Cari nomor unit..." onkeyup="filterTable()"
+                    <input type="text" id="searchUnit" placeholder="Cari nomor unit..." onkeyup="window.filterTable()"
                            class="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl py-2 md:py-3 pl-8 md:pl-10 pr-3 md:pr-4 focus:outline-none focus:border-indigo-500 text-sm md:text-base">
                 </div>
             </div>
@@ -539,360 +511,162 @@
     </section>
 
     <!-- ===== MODAL SIMULASI ===== -->
-    <div id="simulationModal" class="modal-overlay">
+    <div class="modal-overlay" id="simulationModal">
         <div class="modal-content">
             <div class="sticky top-0 bg-[#0a0a0a] border-b border-white/10 p-4 md:p-6 flex justify-between items-center z-10">
-                <div>
-                    <h3 class="text-lg md:text-2xl font-bold text-white">Simulasi Pembayaran Cicilan</h3>
-                    <p class="text-xs md:text-sm text-gray-400 mt-1" id="modalUnitInfo">Unit -</p>
-                </div>
-                <button onclick="closeSimulationModal()" class="touch-friendly p-2 hover:bg-white/10 rounded-full transition">
-                    <i data-lucide="x" class="w-5 h-5 md:w-6 md:h-6 text-gray-400"></i>
-                </button>
+                <h3 class="text-xl font-bold text-gradient">Simulasi Pembayaran</h3>
+                <button onclick="closeSimulationModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
             </div>
-            <div class="p-4 md:p-6 space-y-4">
-                <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="ticket" class="w-4 h-4 text-blue-400"></i>
-                        <span class="text-xs md:text-sm text-gray-300">Administrasi (Dibayar diawal)</span>
+            <div class="p-4 md:p-6">
+                <div class="mb-4 text-sm text-gray-400" id="modalUnitInfo">Unit -</div>
+                <div class="bg-white/5 rounded-xl p-4 mb-4 border border-white/10">
+                    <p class="text-sm text-gray-400">Administrasi (tanda jadi) <span class="float-right font-bold text-white" id="simBookingFee">Rp 0</span></p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white/5 rounded-xl p-4 border border-indigo-500/20">
+                        <h4 class="font-bold text-indigo-400 mb-3">Tenor 2 Tahun (24 bulan)</h4>
+                        <div class="space-y-2 text-sm">
+                            <p>Harga <span class="float-right font-semibold" id="col1Harga">Rp 0</span></p>
+                            <p>DP 20% <span class="float-right font-semibold" id="col1DP">Rp 0</span></p>
+                            <p>Pokok <span class="float-right font-semibold" id="col1Pinjaman">Rp 0</span></p>
+                            <p class="border-t border-white/10 pt-2 mt-2 font-bold text-emerald-400">Cicilan / bulan <span class="float-right" id="col1Cicilan">Rp 0</span></p>
+                        </div>
                     </div>
-                    <span class="text-sm md:text-base font-bold text-blue-400" id="simBookingFee">Rp 1.500.000</span>
-                </div>
-                <div class="overflow-hidden rounded-xl border border-white/10">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-indigo-600/20 text-indigo-400 text-xs md:text-sm font-bold">
-                                <th class="p-2 md:p-3 border-b border-white/10 border-r w-[35%]">Komponen</th>
-                                <th class="p-2 md:p-3 border-b border-white/10 border-r text-center w-[32.5%]">2 Tahun</th>
-                                <th class="p-2 md:p-3 border-b border-white/10 text-center w-[32.5%]">3 Tahun</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[11px] md:text-sm divide-y divide-white/5">
-                            <tr class="hover:bg-white/5">
-                                <td class="p-2 md:p-3 border-r border-white/5 font-medium text-gray-300">Harga</td>
-                                <td class="p-2 md:p-3 border-r border-white/5 text-center text-white font-semibold" id="col1Harga">-</td>
-                                <td class="p-2 md:p-3 text-center text-white font-semibold" id="col2Harga">-</td>
-                            </tr>
-                            <tr class="hover:bg-white/5">
-                                <td class="p-2 md:p-3 border-r border-white/5 font-medium text-gray-300">DP 20% (dibayar di awal)</td>
-                                <td class="p-2 md:p-3 border-r border-white/5 text-center text-white" id="col1DP">-</td>
-                                <td class="p-2 md:p-3 text-center text-white" id="col2DP">-</td>
-                            </tr>
-                            <tr class="hover:bg-white/5">
-                                <td class="p-2 md:p-3 border-r border-white/5 font-medium text-gray-300">Pokok Cicilan</td>
-                                <td class="p-2 md:p-3 border-r border-white/5 text-center text-white" id="col1Pinjaman">-</td>
-                                <td class="p-2 md:p-3 text-center text-white" id="col2Pinjaman">-</td>
-                            </tr>
-                            <tr class="bg-emerald-500/10 font-bold">
-                                <td class="p-2 md:p-3 border-r border-white/5 font-bold text-emerald-400">Cicilan/Bulan</td>
-                                <td class="p-2 md:p-3 border-r border-white/5 text-center text-emerald-400 text-sm md:text-base font-bold" id="col1Cicilan">-</td>
-                                <td class="p-2 md:p-3 text-center text-emerald-400 text-sm md:text-base font-bold" id="col2Cicilan">-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 text-xs text-yellow-200/80 flex items-start gap-2">
-                    <i data-lucide="info" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
-                    <div class="space-y-1">
-                        <p>Disarankan pengambilan jangka waktu Cicilan 3 tahun agar cicilan bulanan lebih ringan.</p>
-                        <p class="text-yellow-400/60 text-[10px] md:text-xs">*Administrasi, DP dan Cicilan pertama dibayar sekali diawal sebagai tanda jadi pemesanan</p>
+                    <div class="bg-white/5 rounded-xl p-4 border border-indigo-500/20">
+                        <h4 class="font-bold text-indigo-400 mb-3">Tenor 3 Tahun (36 bulan)</h4>
+                        <div class="space-y-2 text-sm">
+                            <p>Harga <span class="float-right font-semibold" id="col2Harga">Rp 0</span></p>
+                            <p>DP 20% <span class="float-right font-semibold" id="col2DP">Rp 0</span></p>
+                            <p>Pokok <span class="float-right font-semibold" id="col2Pinjaman">Rp 0</span></p>
+                            <p class="border-t border-white/10 pt-2 mt-2 font-bold text-emerald-400">Cicilan / bulan <span class="float-right" id="col2Cicilan">Rp 0</span></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="sticky bottom-0 bg-[#0a0a0a] border-t border-white/10 p-4 md:p-6 grid grid-cols-3 gap-2 md:gap-3">
-                <button onclick="downloadSimulationPDF()" class="touch-friendly bg-indigo-600 hover:bg-indigo-700 text-white px-2 md:px-4 py-3 rounded-lg md:rounded-xl font-bold text-xs md:text-sm transition flex items-center justify-center gap-1 md:gap-2">
-                    <i data-lucide="download" class="w-3 h-3 md:w-4 md:h-4"></i>
-                    <span>Download PDF</span>
-                </button>
-                <button onclick="contactMarketingSimulation()" class="touch-friendly bg-emerald-600 hover:bg-emerald-700 text-white px-2 md:px-4 py-3 rounded-lg md:rounded-xl font-bold text-xs md:text-sm transition flex items-center justify-center gap-1 md:gap-2">
-                    <i data-lucide="message-circle" class="w-3 h-3 md:w-4 md:h-4"></i>
-                    <span>Tanya Marketing</span>
-                </button>
-                <button onclick="closeSimulationModal()" class="touch-friendly bg-white/5 hover:bg-white/10 text-white px-2 md:px-4 py-3 rounded-lg md:rounded-xl font-bold text-xs md:text-sm transition border border-white/10">
-                    Tutup
-                </button>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button onclick="window.downloadSimulationPDF()" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm font-bold transition">📄 Download PDF</button>
+                    <button onclick="window.contactMarketingSimulation()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-bold transition">📞 Hubungi Marketing</button>
+                    <button onclick="closeSimulationModal()" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ===== MODAL WAITING LIST ===== -->
-    <div id="waitingListModal" class="modal-overlay">
+    <div class="modal-overlay" id="waitingListModal">
         <div class="modal-content">
             <div class="sticky top-0 bg-[#0a0a0a] border-b border-white/10 p-4 md:p-6 flex justify-between items-center z-10">
-                <div>
-                    <h3 class="text-lg md:text-2xl font-bold text-white">🎯 Daftar Tunggu Prioritas</h3>
-                    <p class="text-xs md:text-sm text-yellow-400 mt-1" id="waitingUnitInfo">Unit -</p>
-                </div>
-                <button onclick="closeWaitingListModal()" class="touch-friendly p-2 hover:bg-white/10 rounded-full transition">
-                    <i data-lucide="x" class="w-5 h-5 md:w-6 md:h-6 text-gray-400"></i>
-                </button>
+                <h3 class="text-xl font-bold text-gradient">Daftar Tunggu Unit</h3>
+                <button onclick="closeWaitingListModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
             </div>
-            <div class="p-4 md:p-6 space-y-4">
-                <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-                    <div class="flex items-start gap-3">
-                        <i data-lucide="alert-circle" class="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0"></i>
+            <div class="p-4 md:p-6">
+                <div class="mb-4 text-sm text-gray-400" id="waitingUnitInfo">Unit -</div>
+                <form onsubmit="event.preventDefault(); window.submitWaitingList();">
+                    <div class="space-y-4">
                         <div>
-                            <h4 class="text-white font-bold text-sm mb-1">Unit Sedang Dalam Proses Booking</h4>
-                            <p class="text-gray-300 text-xs leading-relaxed">
-                                Unit ini sedang dalam proses booking oleh calon pembeli lain.
-                                <span class="text-yellow-400 font-semibold">Namun, Anda bisa mendaftar ke Daftar Tunggu Prioritas!</span>
-                            </p>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Nama Lengkap</label>
+                            <input type="text" id="wlNama" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
                         </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 border border-indigo-500/20 rounded-xl p-4 md:p-6">
-                        <h4 class="text-white font-bold text-sm mb-4 flex items-center gap-2">
-                            <i data-lucide="user-plus" class="w-4 h-4 text-indigo-400"></i>
-                            Isi Data Anda
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">Nama Lengkap</label>
-                                <input type="text" id="wlNama" placeholder="Nama lengkap"
-                                       class="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-indigo-500 transition placeholder-gray-600">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">Email Aktif</label>
-                                <input type="email" id="wlEmail" placeholder="email@anda.com"
-                                       class="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-indigo-500 transition placeholder-gray-600">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">WhatsApp</label>
-                                <input type="tel" id="wlWhatsApp" placeholder="081234567890"
-                                       class="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-indigo-500 transition placeholder-gray-600">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1 block">Unit Pilihan</label>
-                                <input type="text" id="wlUnit" readonly
-                                       class="w-full bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-3 py-2.5 text-yellow-400 text-sm font-bold cursor-not-allowed">
-                            </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="wlEmail" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
                         </div>
-                    </div>
-                    <div class="bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 flex flex-col">
-                        <h4 class="text-white font-bold text-sm mb-3 flex items-center gap-2">
-                            <i data-lucide="star" class="w-4 h-4 text-emerald-400"></i>
-                            Keuntungan Daftar Tunggu
-                        </h4>
-                        <ul class="space-y-2 flex-1">
-                            <li class="flex items-start gap-2 text-xs text-gray-300">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i>
-                                <span><strong class="text-emerald-300">Prioritas pertama</strong> jika booking batal</span>
-                            </li>
-                            <li class="flex items-start gap-2 text-xs text-gray-300">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i>
-                                <span><strong class="text-emerald-300">Info real-time</strong> status ketersediaan</span>
-                            </li>
-                            <li class="flex items-start gap-2 text-xs text-gray-300">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i>
-                                <span><strong class="text-emerald-300">Simulasi gratis</strong> & konsultasi</span>
-                            </li>
-                            <li class="flex items-start gap-2 text-xs text-gray-300">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i>
-                                <span><strong class="text-emerald-300">Tanpa biaya</strong> atau komitmen</span>
-                            </li>
-                        </ul>
-                        <div class="mt-3 p-3 bg-black/20 rounded-lg border border-white/5">
-                            <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">Status Unit</p>
-                            <p class="text-xs text-gray-300 leading-relaxed">
-                                Unit ini sedang <span class="text-yellow-400 font-bold">BOOKING</span>.
-                                Daftar sekarang untuk jadi prioritas!
-                            </p>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">WhatsApp</label>
+                            <input type="tel" id="wlWhatsApp" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
                         </div>
+                        <input type="hidden" id="wlUnit" value="">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 py-3 rounded-lg font-bold transition">Kirim Pendaftaran</button>
                     </div>
-                </div>
-            </div>
-            <div class="sticky bottom-0 bg-[#0a0a0a] border-t border-white/10 p-4 md:p-6 grid grid-cols-2 gap-3">
-                <button onclick="closeWaitingListModal()" class="touch-friendly w-full bg-white/5 hover:bg-white/10 text-white px-4 py-3 rounded-xl font-bold text-sm transition border border-white/10">
-                    Tutup
-                </button>
-                <button onclick="submitWaitingList()" class="touch-friendly w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-bold text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
-                    <i data-lucide="send" class="w-4 h-4"></i>
-                    <span>Daftar Sekarang</span>
-                </button>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- ===== VIDEO ===== -->
-    <section id="video" class="bg-[#080808]">
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
-            <div class="text-center mb-8 md:mb-16">
-                <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold mb-2 md:mb-4">Video dan Peta Lokasi</h2>
-                <p data-aos="fade-up" data-aos-delay="100" class="text-sm md:text-base text-gray-500 px-4">
-                    Lihat cuplikan video lokasi dan Peta Lokasi Kavling Kebun Maoslor.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col gap-2 md:gap-4">
-                    <div onclick="window.open('https://youtu.be/KAiCPSpSv00','_blank');"
-                         class="aspect-video glass rounded-2xl md:rounded-[30px] overflow-hidden border border-white/10 shadow-2xl relative group cursor-pointer">
-                        <img src="https://img.youtube.com/vi/KAiCPSpSv00/maxresdefault.jpg"
-                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
-                             alt="Video drone kavling kebun maoslor bidang 1" loading="lazy">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-12 h-12 md:w-16 md:h-16 bg-white/20 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-transform group-hover:scale-125 group-hover:bg-white group-hover:text-black">
-                                <i data-lucide="play" class="ml-0.5 md:ml-1 w-5 h-5 md:w-6 md:h-6"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-1 md:px-2">
-                        <h3 class="text-lg md:text-xl font-bold text-white">Video Shot Bidang 1</h3>
-                        <p class="text-xs md:text-sm text-gray-400">View Bidang 1 kavling terdiri dari 24 unit</p>
-                    </div>
-                </div>
-                <div data-aos="fade-up" data-aos-delay="400" class="flex flex-col gap-2 md:gap-4">
-                    <div onclick="window.open('peta lokasi.jpg','_blank');"
-                         class="aspect-video glass rounded-2xl md:rounded-[30px] overflow-hidden border border-white/10 shadow-2xl relative group cursor-pointer">
-                        <img src="peta lokasi.jpg"
-                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
-                             alt="Peta lokasi kavling kebun maoslor" loading="lazy">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-12 h-12 md:w-16 md:h-16 bg-white/20 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-transform group-hover:scale-125 group-hover:bg-white group-hover:text-black">
-                                <i data-lucide="maximize" class="w-5 h-5 md:w-8 md:h-8"></i>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 md:top-4 right-2 md:right-4 bg-indigo-500 text-[8px] md:text-[10px] px-2 md:px-3 py-0.5 md:py-1 rounded-full font-bold shadow-lg">PETA LOKASI</div>
-                    </div>
-                    <div class="px-1 md:px-2">
-                        <h3 class="text-lg md:text-xl font-bold text-white">Fasilitas Sekitar Lokasi</h3>
-                        <p class="text-xs md:text-sm text-gray-400">Sekolah, pasar & akses transportasi</p>
-                    </div>
-                </div>
-                <div data-aos="fade-up" data-aos-delay="300" class="flex flex-col gap-2 md:gap-4 sm:col-span-2 lg:col-span-1">
-                    <div onclick="window.open('https://youtu.be/su2vp0U5IAU','_blank');"
-                         class="aspect-video glass rounded-2xl md:rounded-[30px] overflow-hidden border border-white/10 shadow-2xl relative group cursor-pointer">
-                        <img src="https://img.youtube.com/vi/su2vp0U5IAU/maxresdefault.jpg"
-                             class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
-                             alt="Video drone kavling kebun maoslor bidang 2" loading="lazy">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-12 h-12 md:w-16 md:h-16 bg-white/20 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-transform group-hover:scale-125 group-hover:bg-white group-hover:text-black">
-                                <i data-lucide="play" class="ml-0.5 md:ml-1 w-5 h-5 md:w-6 md:h-6"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-1 md:px-2">
-                        <h3 class="text-lg md:text-xl font-bold text-white">Video Shot Bidang 2</h3>
-                        <p class="text-xs md:text-sm text-gray-400">View udara Bidang 2 kavling terdiri dari 16 unit</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== FAQ ===== -->
-    <section id="faq" class="py-12 md:py-20 bg-[#050505]">
+    <!-- ===== VIDEO SECTION ===== -->
+    <section id="video" class="bg-[#080808] py-12 md:py-20">
         <div class="max-w-4xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-bold mb-4 text-gradient">Pertanyaan Umum (FAQ)</h2>
-                <p data-aos="fade-up" data-aos-delay="100" class="text-gray-400">Informasi detail mengenai sistem cicilan, jadwal pembayaran, dan ketentuan kepemilikan.</p>
-            </div>
-            <div class="space-y-4">
-                <details class="glass rounded-xl border border-white/10 overflow-hidden" data-aos="fade-up">
-                    <summary class="p-4 md:p-6 font-bold text-white hover:bg-white/5 transition cursor-pointer flex justify-between items-center">
-                        Bagaimana sistem cicilan di Kavling Kebun Maoslor?
-                    </summary>
-                    <div class="p-4 md:p-6 text-gray-400 border-t border-white/5 bg-white/5">
-                        Kami menggunakan sistem cicilan internal (langsung ke developer). Anda cukup membayar DP minimal 20%, dan sisa pelunasan dapat diangsur selama 12, 24, hingga 36 bulan (1-3 tahun) sesuai kesepakatan awal.
-                    </div>
-                </details>
-                <details class="glass rounded-xl border border-white/10 overflow-hidden" data-aos="fade-up">
-                    <summary class="p-4 md:p-6 font-bold text-white hover:bg-white/5 transition cursor-pointer flex justify-between items-center">
-                        Kapan jadwal pembayaran cicilan setiap bulannya?
-                    </summary>
-                    <div class="p-4 md:p-6 text-gray-400 border-t border-white/5 bg-white/5">
-                        Pembayaran cicilan dilakukan paling lambat tanggal 5 setiap bulan berjalan. Kami menyarankan pembayaran melalui transfer bank.
-                    </div>
-                </details>
-                <details class="glass rounded-xl border border-white/10 overflow-hidden" data-aos="fade-up">
-                    <summary class="p-4 md:p-6 font-bold text-white hover:bg-white/5 transition cursor-pointer flex justify-between items-center">
-                        Kapan saya menerima dokumen kepemilikan?
-                    </summary>
-                    <div class="p-4 md:p-6 text-gray-400 border-t border-white/5 bg-white/5">
-                        Dokumen kepemilikan penuh akan diproses dan diserahkan kepada Anda segera setelah seluruh cicilan dilunasi.
-                    </div>
-                </details>
+            <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold text-center mb-6 text-gradient">Video Profil Kavling</h2>
+            <div data-aos="fade-up" data-aos-delay="100" class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/KAiCPSpSv00" title="Kavling Kebun Maoslor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     </section>
 
-    <!-- ===== KONTAK ===== -->
-    <section id="kontak" class="py-12 md:py-20 bg-indigo-600/5">
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="text-center mb-8 md:mb-16">
-                <h2 data-aos="fade-up" class="text-2xl md:text-4xl lg:text-5xl font-extrabold mb-2 md:mb-4 text-gradient">Info & Pemasaran Kavling Kebun Maoslor</h2>
-                <p data-aos="fade-up" data-aos-delay="100" class="text-sm md:text-base text-gray-400 px-4">
-                    Hubungi kami untuk survey lokasi atau bergabung menjadi mitra marketing.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
-                <div data-aos="fade-right" class="glass p-6 md:p-10 rounded-2xl md:rounded-[40px] border-white/5 flex flex-col justify-between relative overflow-hidden">
-                    <div>
-                        <h3 class="text-indigo-400 font-bold uppercase tracking-widest text-xs md:text-sm mb-4 md:mb-6">Marketing Resmi</h3>
-                        <div class="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-indigo-500/50">
-                                <img src="https://lh3.googleusercontent.com/u/0/d/1WT2PV3NgD-irTMwl_TmMsek7_Gm-Gn3T"
-                                     alt="Foto Marketing" class="w-full h-full object-cover">
-                            </div>
-                            <div>
-                                <p class="text-xl md:text-2xl font-extrabold text-white">Ribut Nurdiansyah</p>
-                                <p class="text-gray-400 flex items-center gap-1 md:gap-2 text-xs md:text-sm">
-                                    <i data-lucide="phone" class="w-3 h-3 md:w-4 md:h-4 text-indigo-500"></i> +62 877-8852-6410
-                                </p>
-                            </div>
-                        </div>
-                        <p class="text-gray-400 leading-relaxed mb-6 md:mb-8 text-sm md:text-base">
-                            Hubungi Kami untuk informasi ketersediaan unit terUpdate, detail harga, dan pendampingan survey lokasi secara langsung.
-                        </p>
+    <!-- ===== FAQ SECTION ===== -->
+    <section id="faq" class="py-12 md:py-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold text-center mb-6 text-gradient">Pertanyaan Umum (FAQ)</h2>
+            <div data-aos="fade-up" data-aos-delay="100" class="glass rounded-2xl p-4 md:p-8 border-white/5">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Bagaimana sistem cicilan?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
                     </div>
-                    <a href="https://wa.me/6287788526410?text=Halo%2C%20saya%20tertarik%20dengan%20kavling%20MaosLor"
-                       target="_blank"
-                       class="flex items-center justify-center gap-2 md:gap-3 bg-[#22c55e] hover:bg-[#1aad4f] text-white px-4 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl font-bold text-sm md:text-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-green-500/20 touch-friendly">
-                        <i data-lucide="message-circle" class="w-4 h-4 md:w-5 md:h-5"></i>
-                        <span>Chat Marketing via WhatsApp</span>
-                    </a>
+                    <div class="faq-answer">DP 20% di awal, sisanya dicicil selama 2 atau 3 tahun dengan bunga flat 12% per tahun. Administrasi dibayar sekali di awal.</div>
                 </div>
-                <div data-aos="fade-left" class="glass p-6 md:p-10 rounded-2xl md:rounded-[40px] border-white/5 relative flex flex-col justify-between">
-                    <img src="https://cdn.pixabay.com/photo/2016/03/19/03/09/satisfaction-label-1266125_1280.png"
-                         alt="Logo Garansi" class="w-20 h-auto md:w-32 absolute -top-6 md:-top-10 -right-2 md:-right-4 z-10 drop-shadow-2xl rotate-12" loading="lazy">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Apakah ada biaya tersembunyi?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
+                    </div>
+                    <div class="faq-answer">Tidak ada biaya tersembunyi. Hanya DP, administrasi, dan cicilan sesuai tenor.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Bagaimana cara booking unit?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
+                    </div>
+                    <div class="faq-answer">Hubungi marketing melalui WhatsApp atau isi formulir waiting list jika unit sedang booking.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Apakah bisa survey lokasi?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
+                    </div>
+                    <div class="faq-answer">Tentu, survey gratis. Hubungi marketing untuk janji temu.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== KONTAK & PEMASARAN ===== -->
+    <section id="kontak" class="bg-[#080808] py-12 md:py-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold text-center mb-6 text-gradient">Info & Pemasaran</h2>
+            <div data-aos="fade-up" data-aos-delay="100" class="glass rounded-2xl p-6 md:p-10 border-white/5 text-center">
+                <div class="flex flex-col md:flex-row justify-center gap-8 md:gap-12">
                     <div>
-                        <h3 class="text-indigo-400 font-bold uppercase tracking-widest text-xs md:text-sm mb-4 md:mb-6">Program Marketing Lepas</h3>
-                        <p class="text-gray-400 mb-4 md:mb-6 text-sm md:text-base">
-                            Bergabunglah menjadi mitra pemasaran kami dan dapatkan komisi menarik untuk setiap unit yang terjual.
-                        </p>
-                        <ul class="space-y-3 md:space-y-4 mb-6 md:mb-10">
-                            <li class="flex items-start gap-2 md:gap-3 text-gray-300">
-                                <i data-lucide="check-circle" class="text-indigo-500 w-4 h-4 md:w-5 md:h-5 mt-0.5"></i>
-                                <span class="text-xs md:text-sm">Komisi Besar & transparan untuk setiap penjualan sukses.</span>
-                            </li>
-                            <li class="flex items-start gap-2 md:gap-3 text-gray-300">
-                                <i data-lucide="check-circle" class="text-indigo-500 w-4 h-4 md:w-5 md:h-5 mt-0.5"></i>
-                                <span class="text-xs md:text-sm">Alat bantu website : denah 3D interaktif</span>
-                            </li>
-                            <li class="flex items-start gap-2 md:gap-3 text-gray-300">
-                                <i data-lucide="check-circle" class="text-indigo-500 w-4 h-4 md:w-5 md:h-5 mt-0.5"></i>
-                                <span class="text-xs md:text-sm">Bebas waktu kerja, bisa dikerjakan di mana saja.</span>
-                            </li>
-                        </ul>
+                        <i data-lucide="user" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                        <p class="font-bold">Ribut Nurdiansyah</p>
+                        <p class="text-sm text-gray-400">Marketing</p>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-3 md:gap-4">
-                        <a href="https://wa.me/6287788526410?text=Saya%20ingin%20mendaftar%20sebagai%20mitra%20pemasaran%20Kavling%20MaosLor."
-                           target="_blank"
-                           class="flex-1 flex items-center justify-center gap-1 md:gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-3 md:px-4 rounded-lg md:rounded-xl font-bold text-xs md:text-sm transition-all hover:scale-105 shadow-lg shadow-indigo-500/20 touch-friendly">
-                            <i data-lucide="user-plus" class="w-3 h-3 md:w-4 md:h-4"></i>
-                            <span class="hidden sm:inline">Daftar Sekarang</span>
-                            <span class="sm:hidden">Daftar</span>
-                        </a>
+                    <div>
+                        <i data-lucide="phone" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                        <p class="font-bold">0877-8852-6410</p>
+                        <p class="text-sm text-gray-400">WhatsApp / Telepon</p>
                     </div>
+                    <div>
+                        <i data-lucide="map-pin" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                        <p class="font-bold">Maoslor, Maos, Cilacap</p>
+                        <p class="text-sm text-gray-400">Jawa Tengah 53272</p>
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-center gap-4">
+                    <a href="https://wa.me/6287788526410" target="_blank" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-xl font-bold transition flex items-center gap-2">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> Chat WhatsApp
+                    </a>
+                    <a href="mailto:info@maoslor.com" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-bold transition flex items-center gap-2">
+                        <i data-lucide="mail" class="w-5 h-5"></i> Email
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ===== FOOTER ===== -->
-    <footer class="py-6 md:py-10 text-center text-gray-600 text-xs md:text-xs border-t border-white/5 px-4">
-        <p>&copy; 2026 Kavling Kebun Maos Lor, Maos, Cilacap, JATENG.</p>
-        <p class="mt-2">Koordinat: -7.592451, 109.142820 | Harga mulai Rp 35.000.000</p>
+    <footer class="border-t border-white/10 py-6 text-center text-sm text-gray-500">
+        <p>&copy; 2026 Kavling Kebun Maoslor. All rights reserved.</p>
+        <p class="mt-1">Dikembangkan dengan ❤️ untuk investasi masa depan.</p>
     </footer>
 
     <!-- ===== CHATBOT ===== -->
@@ -900,7 +674,7 @@
         <div class="chatbot-nav-panel" id="chatbotNavPanel">
             <div class="chatbot-header">
                 <h3><i data-lucide="bot"></i> Sari - Agent Properti Maoslor</h3>
-                <button class="chatbot-close-btn" onclick="toggleChatbot()"><i data-lucide="x" style="width:18px;height:18px;"></i></button>
+                <button class="chatbot-close-btn" onclick="window.toggleChatbot()"><i data-lucide="x" style="width:18px;height:18px;"></i></button>
             </div>
             <div class="chat-messages" id="chatbotMessages">
                 <div class="message bot">
@@ -921,1200 +695,163 @@
             </div>
             <div class="chatbot-status"><i data-lucide="circle" style="width:8px;height:8px;fill:#10b981;"></i><span>Sari siap membantu - Online</span></div>
             <div class="quick-reply-container" id="quickReplyContainer">
-                <span class="quick-reply-btn" onclick="quickAsk('1')">📋 Unit Tersedia</span>
-                <span class="quick-reply-btn" onclick="quickAsk('2')">🔍 Cari Unit</span>
-                <span class="quick-reply-btn" onclick="quickAsk('3')">💰 Simulasi</span>
-                <span class="quick-reply-btn" onclick="quickAsk('4')">📍 Lokasi</span>
-                <span class="quick-reply-btn" onclick="quickAsk('5')">📞 Kontak</span>
-                <span class="quick-reply-btn" onclick="quickAsk('6')">❓ Bantuan</span>
+                <span class="quick-reply-btn" onclick="window.quickAsk('1')">📋 Unit Tersedia</span>
+                <span class="quick-reply-btn" onclick="window.quickAsk('2')">🔍 Cari Unit</span>
+                <span class="quick-reply-btn" onclick="window.quickAsk('3')">💰 Simulasi</span>
+                <span class="quick-reply-btn" onclick="window.quickAsk('4')">📍 Lokasi</span>
+                <span class="quick-reply-btn" onclick="window.quickAsk('5')">📞 Kontak</span>
+                <span class="quick-reply-btn" onclick="window.quickAsk('6')">❓ Bantuan</span>
             </div>
             <div class="chatbot-input-area">
-                <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Ketik pesan atau kode unit (contoh: G1, K1)..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-                <button class="chatbot-send-btn" onclick="sendChatMessage()"><i data-lucide="send" style="width:18px;height:18px;"></i></button>
+                <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Ketik pesan atau kode unit (contoh: G1, K1)..." onkeypress="if(event.key==='Enter') window.sendChatMessage()">
+                <button class="chatbot-send-btn" onclick="window.sendChatMessage()"><i data-lucide="send" style="width:18px;height:18px;"></i></button>
             </div>
         </div>
-        <button class="chatbot-floating-btn" id="chatbotFloatingBtn" onclick="toggleChatbot()">
+        <button class="chatbot-floating-btn" id="chatbotFloatingBtn" onclick="window.toggleChatbot()">
             <i data-lucide="message-circle" style="width:32px;height:32px;color:white;"></i>
         </button>
     </div>
 
     <!-- ===== SCRIPTS ===== -->
+    <script src="script.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
-    <!-- Three.js Import -->
+    <!-- Three.js Module -->
     <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        const container = document.getElementById('denah-canvas-container');
+        if (!container) return;
+
+        function buildDenah(data) {
+            // Hapus konten sebelumnya
+            while (container.firstChild) container.removeChild(container.firstChild);
+
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050505);
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const isMobile = window.innerWidth < 768;
+            camera.position.set(0, isMobile ? 45 : 35, isMobile ? 20 : 16);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enabled = false;
+
+            scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+
+            const statusColors = { "Tersedia": "#22c55e", "Booking": "#eab308", "Terjual": "#ef4444" };
+
+            function makeUnitLabel(text, color) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 256;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = color;
+                ctx.fillRect(0, 0, 256, 256);
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 90px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, 128, 128);
+                return new THREE.CanvasTexture(canvas);
             }
+
+            function createPlot(item, x, z, w, d) {
+                const color = statusColors[item.status] || '#888';
+                const tex = makeUnitLabel(item.id, color);
+                const geo = new THREE.BoxGeometry(w, 0.5, d);
+                const matTop = new THREE.MeshStandardMaterial({ map: tex });
+                const matSide = new THREE.MeshStandardMaterial({ color: color });
+                const mesh = new THREE.Mesh(geo, [matSide, matSide, matTop, matSide, matSide, matSide]);
+                mesh.position.set(x, 0.25, z);
+                mesh.userData = item;
+                scene.add(mesh);
+                return mesh;
+            }
+
+            const cols = 6;
+            const rows = Math.ceil(data.length / cols);
+            const spacingX = 1.5;
+            const spacingZ = 1.5;
+            const startX = -(cols - 1) * spacingX / 2;
+            const startZ = -(rows - 1) * spacingZ / 2;
+
+            data.forEach((item, index) => {
+                const row = Math.floor(index / cols);
+                const col = index % cols;
+                const x = startX + col * spacingX;
+                const z = startZ + row * spacingZ;
+                createPlot(item, x, z, 1.2, 1.2);
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                const isMobile = window.innerWidth < 768;
+                camera.position.set(0, isMobile ? 45 : 35, isMobile ? 20 : 16);
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        }
+
+        // Fungsi global untuk rebuild denah
+        window.rebuildDenah = function() {
+            const data = window.dataTanahTable || [];
+            if (data.length === 0) {
+                console.warn('Data unit kosong, denah tidak dibangun.');
+                return;
+            }
+            buildDenah(data);
+        };
+
+        // Jika data sudah ada, bangun langsung
+        if (window.dataTanahTable && window.dataTanahTable.length > 0) {
+            window.rebuildDenah();
+        } else {
+            // Tunggu data dengan polling
+            let attempts = 0;
+            const maxAttempts = 20;
+            const interval = setInterval(() => {
+                attempts++;
+                if (window.dataTanahTable && window.dataTanahTable.length > 0) {
+                    window.rebuildDenah();
+                    clearInterval(interval);
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(interval);
+                    console.warn('Gagal memuat data untuk denah setelah beberapa detik.');
+                }
+            }, 500);
         }
     </script>
 
-    <!-- ==================== MAIN SCRIPT ==================== -->
+    <!-- Inline script untuk inisialisasi tambahan dan FAQ toggle -->
     <script>
-        // ============================================================
-        //  KONFIGURASI
-        // ============================================================
-        const API_BASE = 'https://script.google.com/macros/s/AKfycbxbRGjyO7YZ3hJ4FLmG9EIhKsjEeS7i3L2QIrsZD2YYXrDQSsDyjl6PJzOrW10Zqr6LPg/exec';
-
-        let dataTanahTable = [];
-        let currentSimulationData = null;
-        let currentUnitData = null;
-        let currentWaitingUnitData = null;
-
-        // ============================================================
-        //  JSONP HELPER
-        // ============================================================
-        function jsonpRequest(url) {
-            return new Promise((resolve, reject) => {
-                const callbackName = 'jsonp_callback_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-                const timeoutId = setTimeout(() => {
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    reject(new Error('JSONP request timeout'));
-                }, 15000);
-
-                window[callbackName] = function(data) {
-                    clearTimeout(timeoutId);
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    resolve(data);
-                };
-
-                const script = document.createElement('script');
-                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-                script.onerror = function() {
-                    clearTimeout(timeoutId);
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    reject(new Error('JSONP request failed'));
-                };
-                document.body.appendChild(script);
-            });
-        }
-
-        async function loadUnitsFromAPI() {
-            try {
-                const data = await jsonpRequest(`${API_BASE}?action=list&sheet=units`);
-                if (data.error) throw new Error(data.error);
-                return data;
-            } catch (err) {
-                console.error('❌ Gagal memuat data dari API:', err);
-                return null;
-            }
-        }
-
-        // ============================================================
-        //  UTILITY
-        // ============================================================
-        function formatCurrency(num) {
-            return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-
-        function parsePrice(priceStr) {
-            return parseInt(priceStr.replace(/[^0-9]/g, ''));
-        }
-
-        function getBookingFee(price) {
-            return Math.round(price * 0.03);
-        }
-
-        function calculateBothSimulations(unitPrice) {
-            const price = parsePrice(unitPrice);
-            const dpPercent = 20;
-            const dp = Math.round(price * (dpPercent / 100));
-            const principal = price - dp;
-            const bookingFee = getBookingFee(price);
-            const interestRate = 12;
-
-            const bunga2tahun = Math.round(principal * (interestRate / 100) * 2);
-            const total2tahun = principal + bunga2tahun;
-            const cicilan2tahun = Math.round(total2tahun / 24);
-
-            const bunga3tahun = Math.round(principal * (interestRate / 100) * 3);
-            const total3tahun = principal + bunga3tahun;
-            const cicilan3tahun = Math.round(total3tahun / 36);
-
-            return { price, bookingFee, dp, principal, year2: { cicilan: cicilan2tahun }, year3: { cicilan: cicilan3tahun } };
-        }
-
-        function findUnit(id) {
-            return dataTanahTable.find(u => u.id.toUpperCase() === id.toUpperCase());
-        }
-
-        // ============================================================
-        //  RENDER TABEL
-        // ============================================================
-        function renderTable() {
-            const body = document.getElementById('dataTanahBody');
-            if (!body) return;
-            if (!dataTanahTable || dataTanahTable.length === 0) {
-                body.innerHTML = '<tr><td colspan="6" class="text-center p-4 text-red-400">Gagal memuat data dari server. Periksa koneksi atau refresh.</td></tr>';
-                return;
-            }
-            body.innerHTML = dataTanahTable.map(d => {
-                const statusColor = d.status === "Tersedia" ? "text-green-500" :
-                                   (d.status === "Booking" ? "text-yellow-500" : "text-red-500");
-                let btn = '';
-                if (d.status === "Tersedia") {
-                    btn = `<button onclick="openSimulationModal('${d.id}','${d.harga}')" 
-                                 class="bg-indigo-600/20 hover:bg-indigo-600 text-indigo-400 hover:text-white px-3 py-1 rounded text-xs font-bold transition">Simulasi</button>`;
-                } else if (d.status === "Booking") {
-                    btn = `<button onclick="openWaitingListModal('${d.id}','${d.harga}')" 
-                                 class="bg-yellow-600/20 hover:bg-yellow-600 text-yellow-400 hover:text-white px-3 py-1 rounded text-xs font-bold transition">Waiting</button>`;
-                } else {
-                    btn = `<button disabled class="bg-gray-600/20 text-gray-500 px-3 py-1 rounded text-xs font-bold">Terjual</button>`;
-                }
-                const dimensiStr = (d.p === "Khusus" || d.l === "Khusus") ? "Khusus" : `${d.l}m x ${d.p}m`;
-                return `<tr class="border-b border-white/10 hover:bg-white/5 transition">
-                            <td class="p-3 font-bold">UNIT ${d.id}</td>
-                            <td class="p-3">${d.luas} m²</td>
-                            <td class="p-3">${dimensiStr}</td>
-                            <td class="p-3 ${statusColor} font-bold">${d.status}</td>
-                            <td class="p-3">${d.harga}</td>
-                            <td class="p-3 text-center">${btn}</td>
-                        </tr>`;
-            }).join('');
-            // Bangun denah setelah data tersedia
-            if (typeof window.buildDenah3D === 'function') {
-                window.buildDenah3D();
-            }
-        }
-
-        function filterTable() {
-            const filter = document.getElementById('searchUnit')?.value.toUpperCase() || '';
-            const rows = document.querySelectorAll('#dataTanahBody tr');
-            rows.forEach(row => {
-                const td = row.querySelector('td');
-                row.style.display = td && td.textContent.toUpperCase().includes(filter) ? '' : 'none';
-            });
-        }
-
-        // ============================================================
-        //  MODAL FUNCTIONS
-        // ============================================================
-        window.openSimulationModal = function(unitId, unitPrice) {
-            const unit = findUnit(unitId);
-            if (!unit) return;
-            currentUnitData = unit;
-            const calc = calculateBothSimulations(unit.harga);
-            currentSimulationData = calc;
-            document.getElementById('modalUnitInfo').textContent = `Unit ${unit.id} | Luas ${unit.luas}m² | Status ${unit.status}`;
-            document.getElementById('simBookingFee').textContent = formatCurrency(calc.bookingFee);
-            document.getElementById('col1Harga').textContent = formatCurrency(calc.price);
-            document.getElementById('col1DP').textContent = formatCurrency(calc.dp);
-            document.getElementById('col1Pinjaman').textContent = formatCurrency(calc.principal);
-            document.getElementById('col1Cicilan').textContent = formatCurrency(calc.year2.cicilan);
-            document.getElementById('col2Harga').textContent = formatCurrency(calc.price);
-            document.getElementById('col2DP').textContent = formatCurrency(calc.dp);
-            document.getElementById('col2Pinjaman').textContent = formatCurrency(calc.principal);
-            document.getElementById('col2Cicilan').textContent = formatCurrency(calc.year3.cicilan);
-            document.getElementById('simulationModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            lucide.createIcons();
-        };
-
-        window.openWaitingListModal = function(unitId, unitPrice) {
-            const unit = findUnit(unitId);
-            if (!unit) return;
-            currentWaitingUnitData = unit;
-            document.getElementById('waitingUnitInfo').textContent = `Unit ${unit.id} | Luas ${unit.luas}m² | Harga ${unit.harga} | Status ${unit.status}`;
-            document.getElementById('wlUnit').value = `UNIT ${unit.id}`;
-            document.getElementById('waitingListModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            lucide.createIcons();
-        };
-
-        function closeSimulationModal() {
-            document.getElementById('simulationModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function closeWaitingListModal() {
-            document.getElementById('waitingListModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function submitWaitingList() {
-            if (!currentWaitingUnitData) return;
-            const nama = document.getElementById('wlNama').value.trim();
-            const email = document.getElementById('wlEmail').value.trim();
-            const whatsapp = document.getElementById('wlWhatsApp').value.trim();
-            if (!nama || !email || !whatsapp) {
-                alert('Mohon lengkapi data');
-                return;
-            }
-            const message = `Halo Admin, saya ingin daftar waiting list unit ${currentWaitingUnitData.id}. Nama: ${nama}, Email: ${email}, WA: ${whatsapp}`;
-            window.open(`https://wa.me/6287788526410?text=${encodeURIComponent(message)}`, '_blank');
-            closeWaitingListModal();
-        }
-
-        function downloadSimulationPDF() {
-            if (!currentSimulationData || !currentUnitData) return;
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) + ', ' +
-                now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-            doc.setFontSize(16);
-            doc.text("Simulasi Pembayaran Kavling Kebun Maoslor", 14, 20);
-            doc.setFontSize(10);
-            doc.text(`Unit: ${currentUnitData.id} | Luas: ${currentUnitData.luas}m² | Status: ${currentUnitData.status}`, 14, 28);
-            doc.text(`Generated: ${dateStr}`, 14, 34);
-            doc.text(`*Administrasi: ${formatCurrency(currentSimulationData.bookingFee)} (dibayar diawal)`, 14, 42);
-
-            const body = [
-                ['Harga', formatCurrency(currentSimulationData.price), formatCurrency(currentSimulationData.price)],
-                ['DP 20% (dibayar di Awal)', formatCurrency(currentSimulationData.dp), formatCurrency(currentSimulationData.dp)],
-                ['Pokok Cicilan', formatCurrency(currentSimulationData.principal), formatCurrency(currentSimulationData.principal)],
-                ['Cicilan/Bulan', formatCurrency(currentSimulationData.year2.cicilan), formatCurrency(currentSimulationData.year3.cicilan)]
-            ];
-            doc.autoTable({
-                startY: 48,
-                head: [['Komponen', '2 Tahun', '3 Tahun']],
-                body: body,
-                theme: 'grid',
-                styles: { fontSize: 9, cellPadding: 2 },
-                headStyles: { fillColor: [79, 70, 229] }
-            });
-
-            const finalY = doc.lastAutoTable.finalY + 8;
-            doc.setFontSize(9);
-            doc.text("Catatan:", 14, finalY);
-            doc.setFontSize(8);
-            doc.text("• Disarankan pengambilan jangka waktu Cicilan 3 tahun agar cicilan bulanan lebih ringan", 14, finalY + 6);
-            doc.text("• Administrasi dibayar sekali diawal sebagai tanda jadi", 14, finalY + 12);
-            doc.text("• Angka dapat berubah sesuai ketentuan marketing terbaru", 14, finalY + 18);
-
-            doc.save(`Simulasi_Unit_${currentUnitData.id}_${now.getFullYear()}${now.getMonth()+1}${now.getDate()}_${now.getHours()}${now.getMinutes()}.pdf`);
-        }
-
-        function contactMarketingSimulation() {
-            if (!currentUnitData) return;
-            window.open(`https://wa.me/6287788526410?text=Saya%20tertarik%20dengan%20unit%20${currentUnitData.id}`, '_blank');
-        }
-
-        function downloadPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) + ', ' +
-                now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-            doc.setFontSize(16);
-            doc.text("Daftar Harga & Unit Kavling Maoslor", 14, 20);
-            doc.setFontSize(10);
-            doc.text(`Generated on: ${dateStr}`, 14, 28);
-
-            const rows = dataTanahTable.map(d => {
-                let dimensi = (d.p === "Khusus" || d.l === "Khusus") ? "Khusus" : `${d.l} m x ${d.p} m`;
-                return [`UNIT ${d.id}`, `${d.luas} m²`, dimensi, d.status, d.harga];
-            });
-            doc.autoTable({
-                startY: 35,
-                head: [['ID Unit', 'Luas Tanah', 'Dimensi', 'Status', 'Harga Jual']],
-                body: rows,
-                theme: 'grid',
-                styles: { fontSize: 9, cellPadding: 3 },
-                headStyles: { fillColor: [79, 70, 229], textColor: 255, fontStyle: 'bold' }
-            });
-            doc.save(`Daftar_Harga_KavlingKebunMaoslor_${now.getFullYear()}${now.getMonth()+1}${now.getDate()}_${now.getHours()}${now.getMinutes()}.pdf`);
-        }
-
-        // ============================================================
-        //  NAVIGASI
-        // ============================================================
-        function highlightSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                section.classList.add('section-highlight');
-                setTimeout(() => section.classList.remove('section-highlight'), 2000);
-            }
-        }
-
-        function highlightUnitInTable(unitId) {
-            const rows = document.querySelectorAll('#dataTanahBody tr');
-            for (let row of rows) {
-                if (row.textContent.includes(`UNIT ${unitId}`)) {
-                    row.classList.add('unit-highlight');
-                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => row.classList.remove('unit-highlight'), 3000);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        function navigateToDenah(unitId) {
-            highlightSection('denah');
-            if (unitId) {
-                setTimeout(() => {
-                    const searchInput = document.getElementById('searchUnit');
-                    if (searchInput) {
-                        searchInput.value = unitId;
-                        searchInput.dispatchEvent(new Event('keyup'));
-                    }
-                    highlightUnitInTable(unitId);
-                }, 600);
-            }
-        }
-
-        // ============================================================
-        //  CHATBOT CORE
-        // ============================================================
-        let chatHistory = [];
-        const chatState = {
-            currentMenu: 'main',
-            currentUnitId: null,
-            waitingForUnit: false,
-            lastQuery: ''
-        };
-
-        function statusBadge(status) {
-            const cls = status === 'Tersedia' ? 'badge-tersedia' : (status === 'Booking' ? 'badge-booking' : 'badge-terjual');
-            return `<span class="badge-status ${cls}">${status}</span>`;
-        }
-
-        function unitActionButtons(unit) {
-            let btns = '';
-            if (unit.status === 'Tersedia') {
-                btns += `<span class="chat-action-btn primary" onclick="quickAsk('simulasi ${unit.id}')">💳 Simulasi Cicilan</span>`;
-                btns += `<span class="chat-action-btn" onclick="quickAsk('booking ${unit.id}')">📋 Cara Booking</span>`;
-            } else if (unit.status === 'Booking') {
-                btns += `<span class="chat-action-btn warning" onclick="quickAsk('waiting ${unit.id}')">⏳ Daftar Tunggu</span>`;
-            } else {
-                btns += `<span class="chat-action-btn" style="opacity:0.5;cursor:default;">❌ Terjual</span>`;
-            }
-            btns += `<span class="chat-action-btn" onclick="quickAsk('denah ${unit.id}')">🗺️ Lihat Denah</span>`;
-            btns += `<span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>`;
-            return btns;
-        }
-
-        function renderUnitDetail(unit) {
-            const statusEmoji = unit.status === 'Tersedia' ? '✅' : (unit.status === 'Booking' ? '⏳' : '❌');
-            let msg = `<strong>📦 Unit ${unit.id}</strong><br/><br/>`;
-            msg += `💰 <strong>Harga:</strong> ${unit.harga}<br/>`;
-            msg += `📏 <strong>Luas:</strong> ${unit.luas}m² (${unit.l}m x ${unit.p}m)<br/>`;
-            msg += `📌 <strong>Status:</strong> ${statusEmoji} ${statusBadge(unit.status)}<br/><br/>`;
-            msg += `<strong>📋 Sub-Menu:</strong><br/>`;
-            msg += `<div class="chat-actions">${unitActionButtons(unit)}</div>`;
-            return msg;
-        }
-
-        function renderMainMenu() {
-            return `
-            <strong>📋 Menu Utama — Kavling Maoslor</strong><br/><br/>
-            Pilih opsi di bawah ini:<br/><br/>
-            1️⃣ 📋 <strong>Lihat Unit Tersedia</strong><br/>
-            2️⃣ 🔍 <strong>Cari Unit</strong> (contoh: G1, K1, A1)<br/>
-            3️⃣ 💰 <strong>Simulasi Cicilan</strong><br/>
-            4️⃣ 📍 <strong>Lokasi & Akses</strong><br/>
-            5️⃣ 📞 <strong>Hubungi Marketing</strong><br/>
-            6️⃣ ❓ <strong>Bantuan / FAQ</strong><br/><br/>
-            <em>Ketik nomor atau kata kunci, atau klik tombol cepat di bawah.</em>
-            `;
-        }
-
-        function renderAvailableUnits() {
-            const avail = dataTanahTable.filter(u => u.status === 'Tersedia');
-            if (avail.length === 0) return 'Maaf, saat ini tidak ada unit tersedia. 😔';
-            let msg = `<strong>📋 Unit Tersedia (${avail.length} unit)</strong><br/><br/>`;
-            msg += avail.map(u => `• <strong>${u.id}</strong> — ${u.harga} (${u.luas}m²) ${statusBadge(u.status)}`).join('<br/>');
-            msg += `<br/><br/>💡 <em>Ketik kode unit (contoh: G1) untuk detail lengkap.</em>`;
-            return msg;
-        }
-
-        function renderSimulation(unitId) {
-            const unit = findUnit(unitId);
-            if (!unit) return `❌ Unit ${unitId} tidak ditemukan. Coba cek daftar unit tersedia.`;
-            if (unit.status !== 'Tersedia') {
-                return `❌ Unit ${unitId} saat ini berstatus <strong>${unit.status}</strong>, tidak bisa disimulasikan.`;
-            }
-            const calc = calculateBothSimulations(unit.harga);
-            const msg = `
-            <strong>💳 Simulasi Cicilan — Unit ${unit.id}</strong><br/><br/>
-            💰 Harga: ${unit.harga}<br/>
-            📏 Luas: ${unit.luas}m²<br/>
-            📌 Status: ${statusBadge(unit.status)}<br/><br/>
-            <strong>📊 Skema:</strong><br/>
-            • Administrasi: ${formatCurrency(calc.bookingFee)} (dibayar awal)<br/>
-            • DP 20%: ${formatCurrency(calc.dp)} (dibayar awal)<br/>
-            • Pokok: ${formatCurrency(calc.principal)}<br/><br/>
-            <strong>🔹 2 Tahun (24 bulan):</strong> ${formatCurrency(calc.year2.cicilan)}/bulan<br/>
-            <strong>🔹 3 Tahun (36 bulan):</strong> ${formatCurrency(calc.year3.cicilan)}/bulan<br/><br/>
-            💡 <em>Disarankan tenor 3 tahun agar cicilan lebih ringan.</em><br/><br/>
-            <div class="chat-actions">
-                <span class="chat-action-btn primary" onclick="quickAsk('booking ${unit.id}')">📋 Cara Booking</span>
-                <span class="chat-action-btn" onclick="quickAsk('denah ${unit.id}')">🗺️ Lihat Denah</span>
-                <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
-            </div>
-            `;
-            setTimeout(() => {
-                if (typeof window.openSimulationModal === 'function') {
-                    window.openSimulationModal(unit.id, unit.harga);
-                }
-            }, 400);
-            return msg;
-        }
-
-        function renderBookingInfo(unitId) {
-            const unit = findUnit(unitId);
-            if (!unit) return `❌ Unit ${unitId} tidak ditemukan.`;
-            if (unit.status === 'Terjual') {
-                return `❌ Unit ${unit.id} sudah <strong>TERJUAL</strong>. Silakan cek unit lain yang tersedia.`;
-            }
-            if (unit.status === 'Booking') {
-                return `
-                <strong>⏳ Unit ${unit.id} Sedang Booking</strong><br/><br/>
-                Unit ini sedang dalam proses booking oleh calon pembeli lain.<br/>
-                Namun Anda bisa mendaftar <strong>Daftar Tunggu Prioritas</strong>.<br/><br/>
-                <div class="chat-actions">
-                    <span class="chat-action-btn warning" onclick="quickAsk('waiting ${unit.id}')">📋 Daftar Tunggu</span>
-                    <span class="chat-action-btn" onclick="quickAsk('unit ${unit.id}')">🔍 Lihat Detail</span>
-                    <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
-                </div>
-                `;
-            }
-            return `
-            <strong>📋 Cara Booking — Unit ${unit.id}</strong><br/><br/>
-            ✅ Unit ini <strong>TERSEDIA</strong>!<br/><br/>
-            <strong>Langkah Booking:</strong><br/>
-            1️⃣ Hubungi marketing kami via WhatsApp.<br/>
-            2️⃣ Sampaikan kode unit: <strong>${unit.id}</strong><br/>
-            3️⃣ Lakukan pembayaran DP 20% + administrasi.<br/>
-            4️⃣ Tanda jadi dan cicilan pertama dibayar di awal.<br/><br/>
-            📞 <strong>Kontak:</strong> 0877-8852-6410 (Ribut Nurdiansyah)<br/><br/>
-            <div class="chat-actions">
-                <span class="chat-action-btn primary" onclick="quickAsk('simulasi ${unit.id}')">💳 Simulasi</span>
-                <span class="chat-action-btn" onclick="quickAsk('kontak')">📞 Hubungi Marketing</span>
-                <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
-            </div>
-            `;
-        }
-
-        function renderWaitingList(unitId) {
-            const unit = findUnit(unitId);
-            if (!unit) return `❌ Unit ${unitId} tidak ditemukan.`;
-            if (unit.status === 'Tersedia') {
-                return `✅ Unit ${unit.id} masih <strong>TERSEDIA</strong>, tidak perlu daftar tunggu. Silakan booking langsung!`;
-            }
-            if (unit.status === 'Terjual') {
-                return `❌ Unit ${unit.id} sudah <strong>TERJUAL</strong>.`;
-            }
-            setTimeout(() => {
-                if (typeof window.openWaitingListModal === 'function') {
-                    window.openWaitingListModal(unit.id, unit.harga);
-                }
-            }, 400);
-            return `
-            <strong>⏳ Daftar Tunggu — Unit ${unit.id}</strong><br/><br/>
-            Unit ini sedang <strong>BOOKING</strong>.<br/>
-            Saya sudah bukakan formulir pendaftaran untuk Anda.<br/>
-            Isi data Anda, dan kami akan hubungi jika unit tersedia kembali.<br/><br/>
-            <div class="chat-actions">
-                <span class="chat-action-btn warning" onclick="quickAsk('unit ${unit.id}')">🔍 Detail Unit</span>
-                <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
-            </div>
-            `;
-        }
-
-        function renderLocation() {
-            return `
-            <strong>📍 Lokasi & Akses</strong><br/><br/>
-            Kavling Kebun Maoslor berlokasi di:<br/>
-            <strong>Desa Maoslor, Kecamatan Maos, Kabupaten Cilacap, Jawa Tengah 53272</strong><br/><br/>
-            <strong>✨ Keunggulan:</strong><br/>
-            • Akses jalan desa (lebar 3-4m)<br/>
-            • Dekat SD, SMP, dan Pasar Maos<br/>
-            • 15 menit ke pusat kota Cilacap<br/>
-            • Udara sejuk, cocok untuk hidroponik<br/><br/>
-            <div class="chat-actions">
-                <span class="chat-action-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
-            </div>
-            `;
-        }
-
-        function renderContact() {
-            return `
-            <strong>📞 Hubungi Marketing</strong><br/><br/>
-            👤 <strong>Ribut Nurdiansyah</strong><br/>
-            💬 WhatsApp: <strong>0877-8852-6410</strong><br/><br/>
-            Saya siap bantu kapan saja. 😊<br/>
-            Klik tombol di bawah untuk chat langsung.<br/><br/>
-            <div class="chat-actions">
-                <span class="chat-action-btn primary" onclick="quickAsk('chatwa')">💬 Chat WhatsApp</span>
-                <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
-            </div>
-            `;
-        }
-
-        function renderHelp() {
-            return `
-            <strong>❓ Bantuan & FAQ</strong><br/><br/>
-            <strong>Pertanyaan umum:</strong><br/>
-            • <strong>Cicilan:</strong> DP 20%, tenor 1-3 tahun, bunga 12%/thn flat.<br/>
-            • <strong>Booking:</strong> Hubungi marketing, bayar DP + administrasi.<br/>
-            • <strong>Dokumen:</strong> Diberikan setelah lunas.<br/>
-            • <strong>Survey:</strong> Gratis, hubungi marketing.<br/><br/>
-            <strong>📋 Perintah cepat:</strong><br/>
-            • <strong>unit G1</strong> — detail unit G1<br/>
-            • <strong>simulasi G1</strong> — simulasi cicilan<br/>
-            • <strong>booking G1</strong> — cara booking<br/>
-            • <strong>waiting G1</strong> — daftar tunggu<br/>
-            • <strong>denah G1</strong> — lihat denah<br/><br/>
-            <div class="chat-actions">
-                <span class="back-btn" onclick="quickAsk('menu')">🔙 Kembali</span>
-            </div>
-            `;
-        }
-
-        // ========== CHATBOT UI ==========
-        function setWelcomeTime() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            const welcomeElem = document.getElementById('welcomeTime2');
-            if (welcomeElem) welcomeElem.textContent = timeStr;
-        }
-
-        function toggleChatbot() {
-            const panel = document.getElementById('chatbotNavPanel');
-            const btn = document.getElementById('chatbotFloatingBtn');
-            panel.classList.toggle('active');
-            if (panel.classList.contains('active')) {
-                btn.innerHTML = '<i data-lucide="x" style="width: 32px; height: 32px; color: white;"></i>';
-                setWelcomeTime();
-                if (chatState.currentMenu !== 'main') {
-                    chatState.currentMenu = 'main';
-                    chatState.currentUnitId = null;
-                    chatState.waitingForUnit = false;
-                }
-            } else {
-                btn.innerHTML = '<i data-lucide="message-circle" style="width: 32px; height: 32px; color: white;"></i>';
-            }
-            lucide.createIcons();
-        }
-
-        function addChatMessage(text, sender) {
-            const messagesDiv = document.getElementById('chatbotMessages');
-            const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            messageDiv.innerHTML = `<div class="message-bubble">${text}</div><div class="message-time">${time}</div>`;
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            chatHistory.push({ text, sender, time });
-        }
-
-        function showTypingIndicator() {
-            const messagesDiv = document.getElementById('chatbotMessages');
-            const old = document.getElementById('chatTypingIndicator');
-            if (old) old.remove();
-            const indicator = document.createElement('div');
-            indicator.className = 'message bot';
-            indicator.id = 'chatTypingIndicator';
-            indicator.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
-            messagesDiv.appendChild(indicator);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('chatTypingIndicator');
-            if (indicator) indicator.remove();
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chatbotInput');
-            const text = input.value.trim();
-            if (text) {
-                addChatMessage(text, 'user');
-                processChatQuery(text);
-                input.value = '';
-            }
-        }
-
-        function quickAsk(query) {
-            addChatMessage(query, 'user');
-            processChatQuery(query);
-        }
-
-        // ============================================================
-        //  CHATBOT PROCESS QUERY
-        // ============================================================
-        function processChatQuery(query) {
-            showTypingIndicator();
-
-            const lower = query.trim().toLowerCase();
-            const unitRegex = /\b([a-z]\d+)\b/i;
-            const unitMatch = lower.match(unitRegex);
-            const detectedUnitId = unitMatch ? unitMatch[1].toUpperCase() : null;
-
-            const isMenu = /^(menu|main|kembali|back|0)$/.test(lower) || lower === 'menu utama';
-            const isAvailable = /^(1|unit tersedia|daftar unit|lihat unit|tersedia|unit apa saja)$/.test(lower);
-            const isSearch = /^(2|cari unit|cari|search)$/.test(lower);
-            const isSimulasiCmd = /^(3|simulasi|simulasi cicilan|cicilan)$/.test(lower) || lower.startsWith('simulasi ');
-            const isLocation = /^(4|lokasi|akses|alamat|dimana|letak|peta)$/.test(lower);
-            const isContact = /^(5|kontak|marketing|hubungi|wa|whatsapp|telepon|phone)$/.test(lower);
-            const isHelp = /^(6|bantuan|faq|help|tolong|bantu)$/.test(lower);
-            const isBookingCmd = lower.startsWith('booking ') || lower === 'booking';
-            const isWaitingCmd = lower.startsWith('waiting ') || lower === 'waiting';
-            const isDenahCmd = lower.startsWith('denah ') || lower === 'denah';
-            const isChatWA = /^(chatwa|chat whatsapp|wa sekarang)$/.test(lower);
-
-            // 1. MENU
-            if (isMenu) {
-                chatState.currentMenu = 'main';
-                chatState.currentUnitId = null;
-                chatState.waitingForUnit = false;
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage(renderMainMenu(), 'bot');
-                }, 400);
-                return;
-            }
-
-            // 2. CHAT WA
-            if (isChatWA) {
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage('💬 <strong>Hubungi Marketing via WhatsApp</strong><br/><br/>Klik link ini:<br/><a href="https://wa.me/6287788526410" target="_blank" style="color:#22c55e;font-weight:bold;">0877-8852-6410</a>', 'bot');
-                    setTimeout(() => window.open('https://wa.me/6287788526410', '_blank'), 600);
-                }, 400);
-                return;
-            }
-
-            // 3. UNIT TERSEDIA
-            if (isAvailable) {
-                chatState.currentMenu = 'main';
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage(renderAvailableUnits(), 'bot');
-                }, 400);
-                return;
-            }
-
-            // 4. CARI UNIT
-            if (isSearch) {
-                chatState.waitingForUnit = true;
-                chatState.currentMenu = 'search';
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage('🔍 <strong>Cari Unit</strong><br/><br/>Silakan ketik kode unit yang ingin dicari.<br/>Contoh: <strong>G1</strong>, <strong>K1</strong>, <strong>A1</strong>', 'bot');
-                }, 400);
-                return;
-            }
-
-            // 5. SIMULASI
-            if (isSimulasiCmd) {
-                if (detectedUnitId) {
-                    chatState.currentMenu = 'simulation';
-                    chatState.currentUnitId = detectedUnitId;
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addChatMessage(renderSimulation(detectedUnitId), 'bot');
-                    }, 400);
-                    return;
-                }
-                chatState.waitingForUnit = true;
-                chatState.currentMenu = 'simulation';
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage('💰 <strong>Simulasi Cicilan</strong><br/><br/>Silakan ketik kode unit yang ingin disimulasikan.<br/>Contoh: <strong>G1</strong>, <strong>K1</strong>, <strong>A1</strong>', 'bot');
-                }, 400);
-                return;
-            }
-
-            // 6. LOKASI
-            if (isLocation) {
-                chatState.currentMenu = 'main';
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage(renderLocation(), 'bot');
-                    highlightSection('video');
-                }, 400);
-                return;
-            }
-
-            // 7. KONTAK
-            if (isContact) {
-                chatState.currentMenu = 'main';
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage(renderContact(), 'bot');
-                    highlightSection('kontak');
-                }, 400);
-                return;
-            }
-
-            // 8. BANTUAN
-            if (isHelp) {
-                chatState.currentMenu = 'main';
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage(renderHelp(), 'bot');
-                }, 400);
-                return;
-            }
-
-            // 9. BOOKING
-            if (isBookingCmd) {
-                let unitId = detectedUnitId;
-                if (!unitId && chatState.currentUnitId && chatState.currentMenu === 'unit_detail') {
-                    unitId = chatState.currentUnitId;
-                }
-                if (!unitId) {
-                    chatState.waitingForUnit = true;
-                    chatState.currentMenu = 'booking';
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addChatMessage('📋 <strong>Cara Booking</strong><br/><br/>Silakan ketik kode unit yang ingin di-booking.<br/>Contoh: <strong>G1</strong>, <strong>K1</strong>', 'bot');
-                    }, 400);
-                    return;
-                }
-                chatState.currentMenu = 'booking';
-                chatState.currentUnitId = unitId;
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage(renderBookingInfo(unitId), 'bot');
-                }, 400);
-                return;
-            }
-
-            // 10. WAITING
-            if (isWaitingCmd) {
-                let unitId = detectedUnitId;
-                if (!unitId && chatState.currentUnitId && chatState.currentMenu === 'unit_detail') {
-                    unitId = chatState.currentUnitId;
-                }
-                if (!unitId) {
-                    chatState.waitingForUnit = true;
-                    chatState.currentMenu = 'waiting';
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addChatMessage('⏳ <strong>Daftar Tunggu</strong><br/><br/>Silakan ketik kode unit yang ingin didaftarkan ke waiting list.<br/>Contoh: <strong>G1</strong>, <strong>K1</strong>', 'bot');
-                    }, 400);
-                    return;
-                }
-                chatState.currentMenu = 'waiting';
-                chatState.currentUnitId = unitId;
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    addChatMessage(renderWaitingList(unitId), 'bot');
-                }, 400);
-                return;
-            }
-
-            // 11. DENAH
-            if (isDenahCmd) {
-                let unitId = detectedUnitId;
-                if (!unitId && chatState.currentUnitId && chatState.currentMenu === 'unit_detail') {
-                    unitId = chatState.currentUnitId;
-                }
-                if (unitId) {
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addChatMessage(`🗺️ Saya arahkan ke Denah dan menampilkan Unit <strong>${unitId}</strong>.`, 'bot');
-                        navigateToDenah(unitId);
-                    }, 400);
-                } else {
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addChatMessage('🗺️ Saya arahkan ke Denah 3D interaktif.', 'bot');
-                        highlightSection('denah');
-                    }, 400);
-                }
-                return;
-            }
-
-            // 12. DETEKSI UNIT
-            if (detectedUnitId) {
-                const unit = findUnit(detectedUnitId);
-                if (unit) {
-                    chatState.currentMenu = 'unit_detail';
-                    chatState.currentUnitId = unit.id;
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addChatMessage(renderUnitDetail(unit), 'bot');
-                        navigateToDenah(unit.id);
-                    }, 400);
-                    return;
-                }
-            }
-
-            // 13. FALLBACK: waiting for unit
-            if (chatState.waitingForUnit) {
-                const possibleUnit = findUnit(query);
-                if (possibleUnit) {
-                    chatState.waitingForUnit = false;
-                    const prevMenu = chatState.currentMenu;
-                    if (prevMenu === 'simulation') {
-                        chatState.currentMenu = 'simulation';
-                        chatState.currentUnitId = possibleUnit.id;
-                        setTimeout(() => {
-                            removeTypingIndicator();
-                            addChatMessage(renderSimulation(possibleUnit.id), 'bot');
-                        }, 400);
-                        return;
-                    } else if (prevMenu === 'booking') {
-                        chatState.currentMenu = 'booking';
-                        chatState.currentUnitId = possibleUnit.id;
-                        setTimeout(() => {
-                            removeTypingIndicator();
-                            addChatMessage(renderBookingInfo(possibleUnit.id), 'bot');
-                        }, 400);
-                        return;
-                    } else if (prevMenu === 'waiting') {
-                        chatState.currentMenu = 'waiting';
-                        chatState.currentUnitId = possibleUnit.id;
-                        setTimeout(() => {
-                            removeTypingIndicator();
-                            addChatMessage(renderWaitingList(possibleUnit.id), 'bot');
-                        }, 400);
-                        return;
-                    } else {
-                        chatState.currentMenu = 'unit_detail';
-                        chatState.currentUnitId = possibleUnit.id;
-                        chatState.waitingForUnit = false;
-                        setTimeout(() => {
-                            removeTypingIndicator();
-                            addChatMessage(renderUnitDetail(possibleUnit), 'bot');
-                            navigateToDenah(possibleUnit.id);
-                        }, 400);
-                        return;
-                    }
-                } else {
-                    chatState.waitingForUnit = false;
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addChatMessage(`❌ Saya tidak menemukan unit dengan kode "<strong>${query}</strong>".<br/><br/>Coba ketik kode yang benar, misal: <strong>G1</strong>, <strong>K1</strong>, <strong>A1</strong>.<br/><br/>Atau ketik <strong>menu</strong> untuk kembali.`, 'bot');
-                    }, 400);
-                    return;
-                }
-            }
-
-            // 14. FALLBACK UMUM
-            setTimeout(() => {
-                removeTypingIndicator();
-                addChatMessage(
-                    `Maaf, saya kurang paham dengan pertanyaan Anda. 😊<br/><br/>` +
-                    `Coba gunakan perintah ini:<br/>` +
-                    `• <strong>menu</strong> — lihat menu utama<br/>` +
-                    `• <strong>unit G1</strong> — detail unit G1<br/>` +
-                    `• <strong>simulasi G1</strong> — simulasi cicilan<br/>` +
-                    `• <strong>booking G1</strong> — cara booking<br/>` +
-                    `• <strong>waiting G1</strong> — daftar tunggu<br/>` +
-                    `• <strong>denah G1</strong> — lihat denah<br/>` +
-                    `• <strong>lokasi</strong> — info alamat<br/>` +
-                    `• <strong>kontak</strong> — hubungi marketing<br/><br/>` +
-                    `Atau klik tombol cepat di bawah.`,
-                    'bot'
-                );
-            }, 400);
-        }
-
-        // ============================================================
-        //  THREE.JS DENAH 3D (SESUAI index5.html)
-        // ============================================================
-        function buildDenah3D() {
-            const container = document.getElementById('denah-canvas-container');
-            if (!container) return;
-            // Hapus placeholder
-            const placeholder = document.getElementById('denah-placeholder');
-            if (placeholder) placeholder.remove();
-
-            if (!dataTanahTable || dataTanahTable.length === 0) {
-                container.innerHTML = `
-                    <div class="flex items-center justify-center h-full text-gray-500 text-sm">
-                        Data unit tidak tersedia. Periksa koneksi atau refresh.
-                    </div>
-                `;
-                return;
-            }
-
-            // Gunakan data dari API
-            const data = dataTanahTable;
-
-            import('three').then((THREE) => {
-                import('three/addons/controls/OrbitControls.js').then(({ OrbitControls }) => {
-                    const scene = new THREE.Scene();
-                    scene.background = new THREE.Color(0x050505);
-                    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-                    const isMobile = window.innerWidth < 768;
-                    camera.position.set(0, isMobile ? 45 : 35, isMobile ? 20 : 16);
-
-                    const renderer = new THREE.WebGLRenderer({ antialias: true });
-                    renderer.setSize(container.clientWidth, container.clientHeight);
-                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                    container.appendChild(renderer.domElement);
-
-                    const controls = new OrbitControls(camera, renderer.domElement);
-                    controls.enabled = false;
-
-                    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
-
-                    const statusColors = { "Tersedia": "#22c55e", "Booking": "#eab308", "Terjual": "#ef4444" };
-
-                    // --- JALAN (seperti index5.html) ---
-                    function addRoad(x, z, w, d, rot, name) {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 512;
-                        canvas.height = 64;
-                        const ctx = canvas.getContext('2d');
-                        ctx.fillStyle = '#1e40af';
-                        ctx.fillRect(0, 0, 512, 64);
-                        ctx.fillStyle = 'white';
-                        ctx.font = 'bold 24px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.fillText(name, 256, 42);
-                        const tex = new THREE.CanvasTexture(canvas);
-                        const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshBasicMaterial({ map: tex, side: 2 }));
-                        mesh.position.set(x, 0.05, z);
-                        mesh.rotation.x = -Math.PI / 2;
-                        mesh.rotation.z = rot;
-                        scene.add(mesh);
-                    }
-                    addRoad(-11, -3, 16, 1.8, Math.PI / 2, "J A L A N   D E S A");
-                    addRoad(-5, 5, 16, 1.8, -Math.PI / 12, "J A L A N   D E S A");
-
-                    // --- KOMPAS ---
-                    function makeCompassLabel(text, pos) {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 128;
-                        canvas.height = 128;
-                        const ctx = canvas.getContext('2d');
-                        ctx.fillStyle = 'white';
-                        ctx.font = 'bold 80px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.fillText(text, 64, 90);
-                        const tex = new THREE.CanvasTexture(canvas);
-                        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex }));
-                        sprite.position.copy(pos);
-                        sprite.scale.set(1.5, 1.5, 1);
-                        return sprite;
-                    }
-                    const compassGroup = new THREE.Group();
-                    const matRed = new THREE.MeshBasicMaterial({ color: 0xef4444 });
-                    const matWhite = new THREE.MeshBasicMaterial({ color: 0xffffff });
-                    const coneGeo = new THREE.ConeGeometry(0.5, 2, 8);
-                    const n = new THREE.Mesh(coneGeo, matRed);
-                    n.position.z = -1.2;
-                    n.rotation.x = -Math.PI / 2;
-                    compassGroup.add(n);
-                    const s = new THREE.Mesh(coneGeo, matWhite);
-                    s.position.z = 1.2;
-                    s.rotation.x = Math.PI / 2;
-                    compassGroup.add(s);
-                    const e = new THREE.Mesh(coneGeo, matWhite);
-                    e.position.x = 1.2;
-                    e.rotation.z = -Math.PI / 2;
-                    compassGroup.add(e);
-                    const w = new THREE.Mesh(coneGeo, matWhite);
-                    w.position.x = -1.2;
-                    w.rotation.z = Math.PI / 2;
-                    compassGroup.add(w);
-                    compassGroup.add(makeCompassLabel("U", new THREE.Vector3(0, 0, -3.5)));
-                    compassGroup.add(makeCompassLabel("S", new THREE.Vector3(0, 0, 3.5)));
-                    compassGroup.add(makeCompassLabel("T", new THREE.Vector3(3.5, 0, 0)));
-                    compassGroup.add(makeCompassLabel("B", new THREE.Vector3(-3.5, 0, 0)));
-                    compassGroup.position.set(13, 0.2, -14);
-                    compassGroup.rotation.y = Math.PI;
-                    scene.add(compassGroup);
-
-                    // --- UNIT PLOTS (layout sesuai index5.html) ---
-                    function makeUnitLabel(text, color) {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 256;
-                        canvas.height = 256;
-                        const ctx = canvas.getContext('2d');
-                        ctx.fillStyle = color;
-                        ctx.fillRect(0, 0, 256, 256);
-                        ctx.fillStyle = 'black';
-                        ctx.font = 'bold 90px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillText(text, 128, 128);
-                        return new THREE.CanvasTexture(canvas);
-                    }
-
-                    function createPlot(item, x, z, w, d) {
-                        const color = statusColors[item.status] || '#888';
-                        const tex = makeUnitLabel(item.id, color);
-                        const geo = new THREE.BoxGeometry(w, 0.5, d);
-                        const matTop = new THREE.MeshStandardMaterial({ map: tex });
-                        const matSide = new THREE.MeshStandardMaterial({ color: color });
-                        const mesh = new THREE.Mesh(geo, [matSide, matSide, matTop, matSide, matSide, matSide]);
-                        mesh.position.set(x, 0.25, z);
-                        mesh.userData = item;
-                        scene.add(mesh);
-                        return mesh;
-                    }
-
-                    // Layout: 15 unit pertama di baris 1, 15 berikutnya di baris 2, 6 berikutnya di baris 3, sisanya (unit P) di baris 4
-                    const plots = [];
-                    data.forEach((item, i) => {
-                        if (i < 15) {
-                            const x = -8.5 + (i * 1.3);
-                            const z = -7.5;
-                            createPlot(item, x, z, 1.1, 2.2);
-                        } else if (i < 30) {
-                            const x = -8.5 + ((i - 15) * 1.3);
-                            const z = -4;
-                            createPlot(item, x, z, 1.1, 2.2);
-                        } else if (i < 36) {
-                            const x = -8.5 + ((i - 30) * 1.3);
-                            const z = -1.5;
-                            createPlot(item, x, z, 1.1, 2.2);
-                        } else {
-                            // unit P (i=36) atau lebih
-                            const x = -6 + ((i - 35) * 2);
-                            const z = 2.2;
-                            createPlot(item, x, z, 1.8, 2.8);
-                        }
-                    });
-
-                    // --- TOOLTIP & KLIK ---
-                    const tooltip = document.getElementById('tooltip-denah');
-                    const raycaster = new THREE.Raycaster();
-                    const mouse = new THREE.Vector2();
-                    let hoveredObject = null;
-
-                    container.addEventListener('mousemove', (e) => {
-                        const rect = container.getBoundingClientRect();
-                        mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
-                        mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
-                        tooltip.style.left = (e.clientX + 20) + 'px';
-                        tooltip.style.top = (e.clientY + 20) + 'px';
-                    });
-
-                    container.addEventListener('click', (e) => {
-                        if (hoveredObject) {
-                            const d = hoveredObject.userData;
-                            tooltip.style.display = 'none';
-                            hoveredObject.scale.set(1, 1, 1);
-                            hoveredObject = null;
-                            container.style.cursor = "default";
-                            if (d.status === "Tersedia") {
-                                openSimulationModal(d.id, d.harga);
-                            } else if (d.status === "Booking") {
-                                openWaitingListModal(d.id, d.harga);
-                            } else {
-                                alert(`Maaf, Unit ${d.id} sudah terjual.`);
-                            }
-                        }
-                    });
-
-                    function animate() {
-                        requestAnimationFrame(animate);
-                        raycaster.setFromCamera(mouse, camera);
-                        const hits = raycaster.intersectObjects(scene.children);
-                        let found = false;
-                        for (let hit of hits) {
-                            if (hit.object.userData && hit.object.userData.id) {
-                                if (hoveredObject !== hit.object) {
-                                    if (hoveredObject) hoveredObject.scale.set(1, 1, 1);
-                                    hoveredObject = hit.object;
-                                    const d = hit.object.userData;
-                                    document.getElementById('t-unit').innerHTML =
-                                        `UNIT ${d.id} <span style="color: ${statusColors[d.status]}; font-size: 1em; font-weight: 800; margin-left: 10px;">${d.status.toUpperCase()}</span>`;
-                                    let dimensiText = `${d.luas}m²`;
-                                    if (d.p !== "Khusus" && d.l !== "Khusus") {
-                                        dimensiText += ` | ${d.l}m x ${d.p}m`;
-                                    }
-                                    document.getElementById('t-luas-dimensi').innerText = dimensiText;
-                                    document.getElementById('t-harga').innerText = d.harga;
-                                    tooltip.style.display = 'block';
-                                    hit.object.scale.set(1.05, 5, 1.05);
-                                    container.style.cursor = (d.status === "Tersedia" || d.status === "Booking") ? "pointer" : "default";
-                                }
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            if (hoveredObject) {
-                                hoveredObject.scale.set(1, 1, 1);
-                                container.style.cursor = "default";
-                            }
-                            hoveredObject = null;
-                            tooltip.style.display = 'none';
-                        }
-                        controls.update();
-                        renderer.render(scene, camera);
-                    }
-                    animate();
-
-                    window.addEventListener('resize', () => {
-                        const isMobile = window.innerWidth < 768;
-                        camera.position.set(0, isMobile ? 45 : 35, isMobile ? 20 : 16);
-                        camera.aspect = container.clientWidth / container.clientHeight;
-                        camera.updateProjectionMatrix();
-                        renderer.setSize(container.clientWidth, container.clientHeight);
-                    });
-
-                });
-            }).catch(err => {
-                console.error('Three.js error:', err);
-                container.innerHTML = `
-                    <div class="flex items-center justify-center h-full text-red-400 text-sm">
-                        Gagal memuat Three.js. Periksa koneksi.
-                    </div>
-                `;
-            });
-        }
-
-        // ============================================================
-        //  INISIALISASI
-        // ============================================================
-        async function init() {
-            // 1. Load data dari API
-            const apiData = await loadUnitsFromAPI();
-            if (apiData && Array.isArray(apiData) && apiData.length > 0) {
-                dataTanahTable = apiData;
-                console.log('✅ Data dari API:', dataTanahTable.length, 'unit');
-            } else {
-                dataTanahTable = [];
-                console.error('❌ Gagal memuat data dari API. Denah tidak akan muncul.');
-            }
-            window.dataTanahTable = dataTanahTable;
-
-            // 2. Render tabel
-            renderTable();
-
-            // 3. Bangun denah (hanya jika data tersedia)
-            if (dataTanahTable.length > 0) {
-                // Denah akan dibangun oleh renderTable() via callback
-                // Tapi kita panggil langsung juga untuk jaga-jaga
-                if (typeof window.buildDenah3D === 'function') {
-                    window.buildDenah3D();
-                }
-            } else {
-                // Tampilkan pesan di container denah
-                const container = document.getElementById('denah-canvas-container');
-                const placeholder = document.getElementById('denah-placeholder');
-                if (placeholder) placeholder.remove();
-                if (container) {
-                    container.innerHTML = `
-                        <div class="flex items-center justify-center h-full text-red-400 text-sm">
-                            Gagal memuat data unit. Periksa koneksi atau refresh.
-                        </div>
-                    `;
-                }
-            }
-
-            // 4. Lucide icons
-            lucide.createIcons();
-
-            // 5. AOS
-            AOS.init({ duration: 1000, once: true });
-
-            // 6. Chatbot welcome time
-            setWelcomeTime();
-
-            // 7. Mobile menu
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Mobile menu
             const menuBtn = document.getElementById('mobileMenuButton');
             const closeBtn = document.getElementById('mobileMenuClose');
             const panel = document.getElementById('mobileMenuPanel');
@@ -2137,27 +874,16 @@
                 });
             }
 
-            // 8. Expose fungsi ke global
-            window.toggleChatbot = toggleChatbot;
-            window.sendChatMessage = sendChatMessage;
-            window.quickAsk = quickAsk;
-            window.closeSimulationModal = closeSimulationModal;
-            window.closeWaitingListModal = closeWaitingListModal;
-            window.submitWaitingList = submitWaitingList;
-            window.downloadSimulationPDF = downloadSimulationPDF;
-            window.contactMarketingSimulation = contactMarketingSimulation;
-            window.downloadPDF = downloadPDF;
-            window.filterTable = filterTable;
-            window.openSimulationModal = openSimulationModal;
-            window.openWaitingListModal = openWaitingListModal;
-            window.buildDenah3D = buildDenah3D;
-
-            console.log('✅ Aplikasi siap!');
-        }
-
-        // Jalankan saat DOM siap
-        document.addEventListener('DOMContentLoaded', init);
+            // FAQ toggle
+            window.toggleFaq = function(el) {
+                const answer = el.nextElementSibling;
+                const icon = el.querySelector('.faq-icon');
+                if (answer) {
+                    answer.classList.toggle('open');
+                    if (icon) icon.classList.toggle('open');
+                }
+            };
+        });
     </script>
-<script src="script.js"></script>
 </body>
 </html>
