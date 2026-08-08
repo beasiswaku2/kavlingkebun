@@ -4,15 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>Kavling Kebun Maoslor - Investasi Kebun Hidroponik Cilacap</title>
-    <!-- Meta SEO -->
-    <meta name="description" content="Kavling Kebun Maoslor - Investasi kavling kebun hidroponik di Maos, Cilacap dengan harga mulai Rp 35 juta." />
-    <link rel="canonical" href="https://beasiswaku2.github.io/beasiswaku2.github.io/#denah" />
-    <meta property="og:title" content="Kavling Kebun Maoslor - Investasi Kebun Hidroponik Cilacap" />
-    <meta property="og:image" content="https://img.youtube.com/vi/KAiCPSpSv00/maxresdefault.jpg" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <!-- Tailwind, Fonts, AOS, Lucide -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -20,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet" />
 
     <style>
-        /* ===== RESET & BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -42,20 +32,17 @@
         section { padding: 60px 20px; }
         @media (min-width: 768px) { section { padding: 100px 20px; } }
 
-        /* ===== DENAH 3D ===== */
         #denah-canvas-container {
             width: 100%;
             height: 400px;
             border-radius: 20px;
             overflow: hidden;
             background: #050505;
-            cursor: pointer;
             position: relative;
             border: 1px solid rgba(255,255,255,0.1);
         }
         @media (min-width: 768px) { #denah-canvas-container { height: 500px; border-radius: 30px; } }
-        @media (min-width: 1024px) { #denah-canvas-container { height: 700px; border-radius: 40px; } }
-
+        
         .ui-panel-denah {
             position: absolute;
             top: 10px;
@@ -68,413 +55,86 @@
             border: 1px solid rgba(255,255,255,0.1);
             pointer-events: none;
         }
-        @media (min-width: 768px) {
-            .ui-panel-denah { top: 15px; left: 20px; padding: 15px 25px; border-radius: 20px; }
-        }
-        .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 4px;
-        }
-        @media (min-width: 768px) { .dot { width: 10px; height: 10px; margin-right: 5px; } }
+        .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
         .bg-tersedia { background-color: #22c55e; }
         .bg-booking { background-color: #eab308; }
         .bg-terjual { background-color: #ef4444; }
 
         /* ===== MODAL ===== */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            z-index: 200;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 0;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 200; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease; padding: 20px;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content {
-            background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,0.1);
-            max-width: 900px;
-            width: 100%;
-            height: 100vh;
-            max-height: 100vh;
-            overflow-y: auto;
-            position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            padding: 0;
+            background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1);
+            max-width: 700px; width: 100%; border-radius: 20px; padding: 24px;
+            max-height: 90vh; overflow-y: auto;
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        @media (max-width: 640px) { .modal-content { max-width: 100%; border: none; } }
-
-        /* ===== CHATBOT ===== */
-        .chatbot-nav-container {
-            position: fixed !important;
-            bottom: 20px !important;
-            right: 20px !important;
-            z-index: 100 !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-end !important;
-        }
-        .chatbot-nav-panel {
-            width: 400px;
-            max-width: calc(100vw - 40px);
-            background: linear-gradient(165deg, #0a0a0a 0%, #1a1a1a 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(16,185,129,0.3);
-            border-radius: 28px;
-            margin-bottom: 15px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
-            overflow: hidden;
-            display: none;
-            transform-origin: bottom right;
-            animation: slideIn 0.3s cubic-bezier(0.68,-0.55,0.265,1.55);
-        }
-        .chatbot-nav-panel.active { display: block; }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .chatbot-header {
-            background: linear-gradient(135deg, #059669, #10b981);
-            padding: 18px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chatbot-header h3 {
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chatbot-close-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .chatbot-close-btn:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
-        .chat-messages {
-            height: 350px;
-            overflow-y: auto;
-            padding: 18px;
-            background: rgba(0,0,0,0.4);
-            scroll-behavior: smooth;
-        }
-        .chat-messages::-webkit-scrollbar { width: 5px; }
-        .chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        .chat-messages::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
-
-        .message { margin-bottom: 18px; display: flex; flex-direction: column; animation: messagePop 0.3s ease; }
-        @keyframes messagePop { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .message.user { align-items: flex-end; }
-        .message.bot { align-items: flex-start; }
-        .message-bubble {
-            max-width: 85%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 13px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .message.user .message-bubble {
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        .message.bot .message-bubble {
-            background: rgba(30,30,30,0.95);
-            border: 1px solid rgba(16,185,129,0.3);
-            color: #f3f4f6;
-            border-bottom-left-radius: 4px;
-        }
-        .message-time {
-            font-size: 10px;
-            color: #6b7280;
-            margin-top: 5px;
-            margin-left: 12px;
-            margin-right: 12px;
-        }
-        .chatbot-status {
-            display: flex;
-            align-items: center;
-            padding: 10px 18px;
-            background: rgba(0,0,0,0.6);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: #9ca3af;
-            font-size: 11px;
-            gap: 8px;
-        }
-        .quick-reply-container {
-            padding: 12px 16px;
-            background: rgba(0,0,0,0.4);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .quick-reply-btn {
-            background: rgba(16,185,129,0.15);
-            border: 1px solid rgba(16,185,129,0.3);
-            border-radius: 30px;
-            padding: 6px 14px;
-            font-size: 11px;
-            color: #d1d5db;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-        .quick-reply-btn:hover { background: rgba(16,185,129,0.3); border-color: #10b981; color: white; }
-        .typing-indicator { display: flex; gap: 6px; padding: 10px 16px; background: rgba(30,30,30,0.95); border-radius: 20px; border: 1px solid rgba(16,185,129,0.2); }
-        .typing-indicator span { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: typing 1.2s infinite ease-in-out; }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; background: #059669; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; background: #10b981; }
-        @keyframes typing { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        .chatbot-input-area {
-            display: flex;
-            gap: 10px;
-            padding: 14px 16px;
-            background: rgba(0,0,0,0.6);
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .chatbot-input {
-            flex: 1;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 10px 16px;
-            color: white;
-            font-size: 13px;
-            transition: all 0.2s;
-        }
-        .chatbot-input:focus { outline: none; border-color: #10b981; background: rgba(255,255,255,0.12); }
-        .chatbot-input::placeholder { color: #6b7280; font-style: italic; }
-        .chatbot-send-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #059669, #10b981);
-            border: none;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
-        }
-        .chatbot-send-btn:hover { transform: scale(1.08); }
-        .chatbot-floating-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #059669, #10b981);
-            border: 3px solid rgba(255,255,255,0.2);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(16,185,129,0.4);
-            animation: float 3s infinite ease-in-out;
-        }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-        .chatbot-floating-btn:hover { transform: scale(1.08); }
-
-        /* ===== BADGE & ACTION ===== */
-        .badge-status { display: inline-block; padding: 2px 12px; border-radius: 30px; font-size: 11px; font-weight: 700; margin-top: 4px; }
-        .badge-tersedia { background: rgba(34,197,94,0.25); color: #22c55e; border: 1px solid #22c55e; }
-        .badge-booking { background: rgba(234,179,8,0.25); color: #eab308; border: 1px solid #eab308; }
-        .badge-terjual { background: rgba(239,68,68,0.25); color: #ef4444; border: 1px solid #ef4444; }
-        .chat-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .chat-action-btn {
-            background: rgba(16,185,129,0.12);
-            border: 1px solid rgba(16,185,129,0.25);
-            border-radius: 20px;
-            padding: 5px 14px;
-            font-size: 11px;
-            color: #d1d5db;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-        .chat-action-btn:hover { background: rgba(16,185,129,0.3); border-color: #10b981; color: #fff; }
-        .chat-action-btn.primary { background: rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.3); }
-        .chat-action-btn.primary:hover { background: rgba(99,102,241,0.35); border-color: #6366f1; }
-        .chat-action-btn.warning { background: rgba(234,179,8,0.15); border-color: rgba(234,179,8,0.25); }
-        .chat-action-btn.warning:hover { background: rgba(234,179,8,0.3); border-color: #eab308; }
-        .back-btn {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 14px;
-            border-radius: 30px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #9ca3af;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .back-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .chatbot-nav-panel { width: 340px !important; right: 10px !important; bottom: 80px !important; }
-            .chatbot-nav-container { bottom: 20px !important; right: 10px !important; }
-            .chat-messages { height: 350px; }
-            .message-bubble { font-size: 12px; padding: 10px 14px; }
-        }
-        .touch-friendly { min-height: 44px; min-width: 44px; }
-        .section-highlight { animation: highlightPulse 1.5s ease 2; box-shadow: 0 0 0 4px rgba(16,185,129,0.5); }
-        @keyframes highlightPulse { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); } 50% { box-shadow: 0 0 0 15px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
-        .unit-highlight { background: rgba(16,185,129,0.3) !important; border: 2px solid #10b981 !important; transition: all 0.3s ease; }
     </style>
 </head>
 <body>
-    <!-- ===== NAVBAR ===== -->
+
+    <!-- NAVBAR -->
     <nav class="fixed w-full z-[100] px-4 py-4 md:px-6 md:py-6">
-        <div class="max-w-6xl mx-auto flex justify-between items-center glass px-4 py-3 md:px-8 md:py-4 rounded-2xl md:rounded-3xl">
+        <div class="max-w-6xl mx-auto flex justify-between items-center glass px-4 py-3 md:px-8 md:py-4 rounded-2xl">
             <div class="text-lg md:text-xl font-extrabold tracking-tighter">
                 KAVLING KEBUN <span class="text-indigo-500">MAOSLOR</span>
             </div>
-            <button id="mobileMenuButton" class="md:hidden touch-friendly text-white" aria-label="Buka Menu Mobile">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
             <div class="hidden md:flex gap-6 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
                 <a href="#home">Home</a>
                 <a href="#denah">Denah</a>
                 <a href="#harga">Harga</a>
-                <a href="#video">Video</a>
-                <a href="#faq">FAQ</a>
-                <a href="#kontak">Info & Pemasaran</a>
-            </div>
-        </div>
-        <!-- Mobile Menu Panel -->
-        <div id="mobileMenuPanel" class="md:hidden fixed inset-0 bg-black/95 backdrop-blur-lg z-[99] hidden">
-            <div class="flex flex-col items-center justify-center h-full gap-8 text-lg">
-                <button id="mobileMenuClose" class="absolute top-6 right-6 text-white" aria-label="Tutup Menu">
-                    <i data-lucide="x" class="w-8 h-8"></i>
-                </button>
-                <a href="#home" class="mobile-menu-link text-white hover:text-indigo-400 transition">Home</a>
-                <a href="#denah" class="mobile-menu-link text-white hover:text-indigo-400 transition">Denah</a>
-                <a href="#harga" class="mobile-menu-link text-white hover:text-indigo-400 transition">Harga</a>
-                <a href="#video" class="mobile-menu-link text-white hover:text-indigo-400 transition">Video</a>
-                <a href="#faq" class="mobile-menu-link text-white hover:text-indigo-400 transition">FAQ</a>
-                <a href="#kontak" class="mobile-menu-link text-white hover:text-indigo-400 transition">Info & Pemasaran</a>
             </div>
         </div>
     </nav>
 
-    <!-- ===== HOME SECTION ===== -->
-    <section id="home" class="min-h-[60vh] flex items-center justify-center py-16 md:py-20">
+    <!-- HOME SECTION -->
+    <section id="home" class="min-h-[60vh] flex items-center justify-center pt-28">
         <div class="max-w-7xl mx-auto text-center px-4">
-            <div data-aos="fade-up" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-indigo-500/20 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-6 border border-emerald-500/30">
-                <i data-lucide="trending-up" class="w-4 h-4"></i> Investasi Properti Masa Depan 2026
-            </div>
-            <h1 data-aos="fade-up" class="text-4xl md:text-5xl font-extrabold mb-6 text-gradient leading-tight">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-gradient leading-tight">
                 Miliki Kavling Impian<br /><span class="text-emerald-300">Dengan Cicilan Ringan 1-3 Tahun</span>
             </h1>
-            <p data-aos="fade-up" data-aos-delay="100" class="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
-                <strong class="text-white">Kemudahan memiliki aset tanah:</strong> Tanpa ribet, tanpa bunga bank yang kompetitif.
-                Kavling Kebun Maoslor kini hadir dengan <span class="text-emerald-400 font-semibold">Sistem Cicilan Fleksibel</span>
-                langsung ke developer. Cukup dengan <span class="text-emerald-400 font-semibold">DP 20%</span>, Anda sudah bisa mengamankan unit.
-            </p>
-            <div data-aos="fade-up" data-aos-delay="200" class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
-                <div class="glass p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
-                    <div class="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i data-lucide="calendar" class="w-5 h-5 text-emerald-400"></i>
-                    </div>
-                    <h3 class="text-white font-bold text-sm mb-2">Tenor 1-3 Tahun</h3>
-                    <p class="text-gray-400 text-xs">Pilihan jangka waktu cicilan yang fleksibel.</p>
-                </div>
-                <div class="glass p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5">
-                    <div class="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i data-lucide="wallet" class="w-5 h-5 text-indigo-400"></i>
-                    </div>
-                    <h3 class="text-white font-bold text-sm mb-2">DP Terjangkau</h3>
-                    <p class="text-gray-400 text-xs">Cukup bayar DP 20% dari harga kavling.</p>
-                </div>
-                <div class="glass p-4 rounded-xl border border-yellow-500/20 bg-yellow-500/5">
-                    <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-yellow-400"></i>
-                    </div>
-                    <h3 class="text-white font-bold text-sm mb-2">Pasti Disetujui</h3>
-                    <p class="text-gray-400 text-xs">Sistem cicilan internal, tanpa BI Checking.</p>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- ===== DENAH SECTION ===== -->
+    <!-- DENAH SECTION -->
     <section id="denah" class="bg-[#080808]">
         <div class="max-w-6xl mx-auto px-4">
-            <div data-aos="zoom-in" id="denah-canvas-container" role="img" aria-label="Denah 3D Interaktif">
+            <div id="denah-canvas-container">
                 <div class="ui-panel-denah">
-                    <div class="flex gap-2 md:gap-4 mt-1 md:mt-2 text-xs uppercase tracking-widest font-bold">
+                    <div class="flex gap-2 text-xs uppercase tracking-widest font-bold">
                         <span class="flex items-center"><span class="dot bg-tersedia"></span> Tersedia</span>
                         <span class="flex items-center"><span class="dot bg-booking"></span> Booking</span>
                         <span class="flex items-center"><span class="dot bg-terjual"></span> Terjual</span>
                     </div>
-                    <div class="text-center mb-0 mt-1 md:mt-2">
-                        <p class="text-white text-sm md:text-[20px]">Arahkan kursor dan klik unit untuk info Simulasi Pembayaran.</p>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== HARGA SECTION ===== -->
+    <!-- HARGA SECTION -->
     <section id="harga" class="py-12 md:py-20">
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="text-center mb-8 md:mb-12">
-                <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-gradient">Daftar Harga Cicilan Per Unit</h2>
-                <p data-aos="fade-up" data-aos-delay="100" class="text-sm md:text-base text-gray-400 px-4">
-                    Pilih unit impian Anda. Klik tombol "Simulasi" untuk melihat detail.
-                </p>
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-4xl font-bold mb-2 text-gradient">Daftar Harga Cicilan Per Unit</h2>
             </div>
-            <div class="flex flex-col md:flex-row justify-between items-center mb-4 md:mb-8 gap-3 md:gap-4">
-                <button onclick="window.downloadPDF();" class="bg-blue-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl font-bold text-sm md:text-base transition flex items-center gap-2 shadow-lg shadow-green-500/20 touch-friendly">
-                    <i data-lucide="file-text" class="w-3 h-3 md:w-4 md:h-4"></i> Download PDF
-                </button>
-                <div class="relative w-full md:w-64">
-                    <i data-lucide="search" class="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-gray-500 w-3 h-3 md:w-4 md:h-4"></i>
-                    <input type="text" id="searchUnit" placeholder="Cari nomor unit..." onkeyup="window.filterTable()"
-                           class="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl py-2 md:py-3 pl-8 md:pl-10 pr-3 md:pr-4 focus:outline-none focus:border-indigo-500 text-sm md:text-base">
-                </div>
+            <div class="flex justify-end mb-4">
+                <input type="text" id="searchUnit" placeholder="Cari nomor unit..." onkeyup="window.filterTable()"
+                       class="w-full md:w-64 bg-white/5 border border-white/10 rounded-xl py-2 px-4 focus:outline-none focus:border-indigo-500 text-sm">
             </div>
-            <div class="glass rounded-2xl md:rounded-[30px] overflow-hidden border-white/5 shadow-2xl">
+            <div class="glass rounded-3xl overflow-hidden shadow-2xl">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse" id="tableHarga">
                         <thead>
-                            <tr class="bg-indigo-600/20 text-indigo-400 uppercase text-xs md:text-xs font-bold tracking-widest">
-                                <th class="p-3 md:p-5">ID Unit</th>
-                                <th class="p-3 md:p-5">Luas (m²)</th>
-                                <th class="p-3 md:p-5">Dimensi (m)</th>
-                                <th class="p-3 md:p-5">Status</th>
-                                <th class="p-3 md:p-5">Harga</th>
-                                <th class="p-3 md:p-5 text-center">Aksi</th>
+                            <tr class="bg-indigo-600/20 text-indigo-400 uppercase text-xs font-bold tracking-widest">
+                                <th class="p-4">ID Unit</th>
+                                <th class="p-4">Luas (m²)</th>
+                                <th class="p-4">Dimensi (m)</th>
+                                <th class="p-4">Status</th>
+                                <th class="p-4">Harga</th>
+                                <th class="p-4 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-300 divide-y divide-white/5" id="dataTanahBody">
@@ -486,64 +146,66 @@
         </div>
     </section>
 
-    <!-- ===== MODAL SIMULASI & WAITING LIST ===== -->
-    <!-- Sama seperti sebelumnya, saya tidak tulis ulang di sini agar file tidak terlalu panjang, 
-         tapi tetap sama persis dengan yang ada di file sebelumnya. 
-         Anda bisa copy-paste dari kode sebelumnya. -->
-
-    <!-- ===== VIDEO, FAQ, KONTAK, FOOTER ===== -->
-    <!-- Sama seperti sebelumnya -->
-
-    <!-- ===== CHATBOT ===== -->
-    <div class="chatbot-nav-container">
-        <div class="chatbot-nav-panel" id="chatbotNavPanel">
-            <div class="chatbot-header">
-                <h3><i data-lucide="bot"></i> Sari - Agent Properti Maoslor</h3>
-                <button class="chatbot-close-btn" onclick="window.toggleChatbot()"><i data-lucide="x" style="width:18px;height:18px;"></i></button>
-            </div>
-            <div class="chat-messages" id="chatbotMessages">
-                <div class="message bot">
-                    <div class="message-bubble" id="initialBotMessage">
-                        Halo! 👋 Saya <strong>Sari, agent properti Maoslor</strong>.<br /><br />
-                        Saya akan membantu Anda menemukan kavling kebun impian dengan harga terbaik. 💚<br /><br />
-                        <strong>📋 Menu Utama:</strong><br />
-                        1️⃣ 📋 Lihat Unit Tersedia<br />
-                        2️⃣ 🔍 Cari Unit (contoh: G1, K1, A1)<br />
-                        3️⃣ 💰 Simulasi Cicilan<br />
-                        4️⃣ 📍 Lokasi & Akses<br />
-                        5️⃣ 📞 Hubungi Marketing<br />
-                        6️⃣ ❓ Bantuan / FAQ<br /><br />
-                        <em>Ketik nomor atau kata kunci, atau klik tombol cepat di bawah ini.</em>
+    <!-- MODAL SIMULASI -->
+    <div class="modal-overlay" id="simulationModal">
+        <div class="modal-content">
+            <h3 class="text-xl font-bold mb-2">Simulasi Cicilan</h3>
+            <p id="modalUnitInfo" class="text-sm text-gray-400 mb-4"></p>
+            <div class="space-y-2 text-sm mb-6">
+                <p>Biaya Administrasi: <span id="simBookingFee" class="font-bold"></span></p>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="glass p-3 rounded-xl">
+                        <h4 class="font-bold text-indigo-400">Tenor 2 Tahun</h4>
+                        <p>Harga: <span id="col1Harga"></span></p>
+                        <p>DP 20%: <span id="col1DP"></span></p>
+                        <p>Pokok: <span id="col1Pinjaman"></span></p>
+                        <p class="mt-2 font-bold text-emerald-400">Cicilan: <span id="col1Cicilan"></span>/bln</p>
                     </div>
-                    <div class="message-time" id="welcomeTime2"></div>
+                    <div class="glass p-3 rounded-xl">
+                        <h4 class="font-bold text-indigo-400">Tenor 3 Tahun</h4>
+                        <p>Harga: <span id="col2Harga"></span></p>
+                        <p>DP 20%: <span id="col2DP"></span></p>
+                        <p>Pokok: <span id="col2Pinjaman"></span></p>
+                        <p class="mt-2 font-bold text-emerald-400">Cicilan: <span id="col2Cicilan"></span>/bln</p>
+                    </div>
                 </div>
             </div>
-            <div class="chatbot-status"><i data-lucide="circle" style="width:8px;height:8px;fill:#10b981;"></i><span>Sari siap membantu - Online</span></div>
-            <div class="quick-reply-container" id="quickReplyContainer">
-                <span class="quick-reply-btn" onclick="window.quickAsk('1')">📋 Unit Tersedia</span>
-                <span class="quick-reply-btn" onclick="window.quickAsk('2')">🔍 Cari Unit</span>
-                <span class="quick-reply-btn" onclick="window.quickAsk('3')">💰 Simulasi</span>
-                <span class="quick-reply-btn" onclick="window.quickAsk('4')">📍 Lokasi</span>
-                <span class="quick-reply-btn" onclick="window.quickAsk('5')">📞 Kontak</span>
-                <span class="quick-reply-btn" onclick="window.quickAsk('6')">❓ Bantuan</span>
-            </div>
-            <div class="chatbot-input-area">
-                <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Ketik pesan atau kode unit (contoh: G1, K1)..." onkeypress="if(event.key==='Enter') window.sendChatMessage()">
-                <button class="chatbot-send-btn" onclick="window.sendChatMessage()"><i data-lucide="send" style="width:18px;height:18px;"></i></button>
-            </div>
+            <button onclick="document.getElementById('simulationModal').classList.remove('active'); document.body.style.overflow='auto';"
+                    class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded-xl font-bold text-sm">Tutup</button>
         </div>
-        <button class="chatbot-floating-btn" id="chatbotFloatingBtn" onclick="window.toggleChatbot()">
-            <i data-lucide="message-circle" style="width:32px;height:32px;color:white;"></i>
-        </button>
     </div>
 
-    <!-- ===== SCRIPTS ===== -->
+    <!-- MODAL WAITING LIST -->
+    <div class="modal-overlay" id="waitingListModal">
+        <div class="modal-content">
+            <h3 class="text-xl font-bold mb-2">Daftar Tunggu (Waiting List)</h3>
+            <p id="waitingUnitInfo" class="text-sm text-gray-400 mb-4"></p>
+            <div class="space-y-4">
+                <input type="hidden" id="wlUnit">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Nama Lengkap</label>
+                    <input type="text" id="wlNama" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Email</label>
+                    <input type="email" id="wlEmail" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Nomor WhatsApp</label>
+                    <input type="text" id="wlWhatsApp" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="window.submitWaitingList()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-sm transition">Daftar</button>
+                    <button onclick="document.getElementById('waitingListModal').classList.remove('active'); document.body.style.overflow='auto';"
+                            class="flex-1 bg-gray-700 hover:bg-gray-600 py-3 rounded-xl font-bold text-sm transition">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
     <script src="script.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-
-    <!-- Three.js Module -->
     <script type="importmap">
     {
         "imports": {
@@ -557,113 +219,46 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
         const container = document.getElementById('denah-canvas-container');
-        if (!container) return;
+        if (container) {
+            function buildDenah(data) {
+                while (container.firstChild) container.removeChild(container.firstChild);
+                const scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x050505);
+                const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+                camera.position.set(0, 35, 16);
 
-        function buildDenah(data) {
-            while (container.firstChild) container.removeChild(container.firstChild);
-
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x050505);
-            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            const isMobile = window.innerWidth < 768;
-            camera.position.set(0, isMobile ? 45 : 35, isMobile ? 20 : 16);
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            container.appendChild(renderer.domElement);
-
-            const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enabled = false;
-
-            scene.add(new THREE.AmbientLight(0xffffff, 1.2));
-
-            const statusColors = { "Tersedia": "#22c55e", "Booking": "#eab308", "Terjual": "#ef4444" };
-
-            function makeUnitLabel(text, color) {
-                const canvas = document.createElement('canvas');
-                canvas.width = 256;
-                canvas.height = 256;
-                const ctx = canvas.getContext('2d');
-                ctx.fillStyle = color;
-                ctx.fillRect(0, 0, 256, 256);
-                ctx.fillStyle = 'black';
-                ctx.font = 'bold 90px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(text, 128, 128);
-                return new THREE.CanvasTexture(canvas);
-            }
-
-            function createPlot(item, x, z, w, d) {
-                const color = statusColors[item.status] || '#888';
-                const tex = makeUnitLabel(item.id, color);
-                const geo = new THREE.BoxGeometry(w, 0.5, d);
-                const matTop = new THREE.MeshStandardMaterial({ map: tex });
-                const matSide = new THREE.MeshStandardMaterial({ color: color });
-                const mesh = new THREE.Mesh(geo, [matSide, matSide, matTop, matSide, matSide, matSide]);
-                mesh.position.set(x, 0.25, z);
-                mesh.userData = item;
-                scene.add(mesh);
-                return mesh;
-            }
-
-            // Layout sederhana: grid
-            const cols = 6;
-            const rows = Math.ceil(data.length / cols);
-            const spacingX = 1.5;
-            const spacingZ = 1.5;
-            const startX = -(cols - 1) * spacingX / 2;
-            const startZ = -(rows - 1) * spacingZ / 2;
-
-            data.forEach((item, index) => {
-                const row = Math.floor(index / cols);
-                const col = index % cols;
-                const x = startX + col * spacingX;
-                const z = startZ + row * spacingZ;
-                createPlot(item, x, z, 1.2, 1.2);
-            });
-
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                const isMobile = window.innerWidth < 768;
-                camera.position.set(0, isMobile ? 45 : 35, isMobile ? 20 : 16);
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
+                const renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setSize(container.clientWidth, container.clientHeight);
-            });
-        }
+                container.appendChild(renderer.domElement);
 
-        window.rebuildDenah = function() {
-            const data = window.dataTanahTable || [];
-            if (data.length === 0) {
-                console.warn('Data unit kosong, denah tidak dibangun.');
-                return;
+                scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+                const statusColors = { "Tersedia": "#22c55e", "Booking": "#eab308", "Terjual": "#ef4444" };
+
+                data.forEach((item, index) => {
+                    const color = statusColors[item.status] || '#888';
+                    const geo = new THREE.BoxGeometry(1.2, 0.5, 1.2);
+                    const mat = new THREE.MeshStandardMaterial({ color: color });
+                    const mesh = new THREE.Mesh(geo, mat);
+                    const cols = 6;
+                    const x = (index % cols - cols / 2) * 1.5;
+                    const z = (Math.floor(index / cols) - 2) * 1.5;
+                    mesh.position.set(x, 0.25, z);
+                    scene.add(mesh);
+                });
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    renderer.render(scene, camera);
+                }
+                animate();
             }
-            buildDenah(data);
-        };
 
-        if (window.dataTanahTable && window.dataTanahTable.length > 0) {
-            window.rebuildDenah();
-        } else {
-            console.log('Menunggu data unit untuk membangun denah...');
+            window.rebuildDenah = function() {
+                if (window.dataTanahTable && window.dataTanahTable.length > 0) {
+                    buildDenah(window.dataTanahTable);
+                }
+            };
         }
-    </script>
-
-    <!-- Inline script minimal untuk inisialisasi tambahan -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inisialisasi AOS dan Lucide sudah ditangani di script.js
-            // Tapi jika belum, kita panggil
-            if (typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        });
     </script>
 </body>
 </html>
