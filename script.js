@@ -4,7 +4,7 @@
 // ============================================================
 
 // ========== KONFIGURASI API ==========
-const API_BASE = 'https://script.google.com/macros/s/AKfycbwAmoNRFiybJ433Wa-C1220op1wkSo0NvjJJl-02rV38QLIOI7oq1C-HbzpQdTb7UxL2g/exec';
+const API_BASE = 'https://script.google.com/macros/s/AKfycbz_jCi9eJDsJnMtPD4qfP4nTXB9JwAP40wu_Rl70Ruac0eJug-o4XOzu_6ijqpPReNz5Q/exec';
 
 // ========== VARIABEL GLOBAL ==========
 let dataTanahTable = [];
