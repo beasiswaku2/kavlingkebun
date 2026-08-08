@@ -350,6 +350,30 @@
         .section-highlight { animation: highlightPulse 1.5s ease 2; box-shadow: 0 0 0 4px rgba(16,185,129,0.5); }
         @keyframes highlightPulse { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); } 50% { box-shadow: 0 0 0 15px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
         .unit-highlight { background: rgba(16,185,129,0.3) !important; border: 2px solid #10b981 !important; transition: all 0.3s ease; }
+
+        /* ===== VIDEO, FAQ, KONTAK, FOOTER ===== */
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 16px 0;
+        }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question {
+            font-weight: 600;
+            color: #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-top: 8px;
+            display: none;
+        }
+        .faq-answer.open { display: block; }
+        .faq-icon { transition: transform 0.3s; }
+        .faq-icon.open { transform: rotate(180deg); }
     </style>
 </head>
 <body>
@@ -486,13 +510,164 @@
         </div>
     </section>
 
-    <!-- ===== MODAL SIMULASI & WAITING LIST ===== -->
-    <!-- Sama seperti sebelumnya, saya tidak tulis ulang di sini agar file tidak terlalu panjang, 
-         tapi tetap sama persis dengan yang ada di file sebelumnya. 
-         Anda bisa copy-paste dari kode sebelumnya. -->
+    <!-- ===== MODAL SIMULASI ===== -->
+    <div class="modal-overlay" id="simulationModal">
+        <div class="modal-content">
+            <div class="sticky top-0 bg-[#0a0a0a] border-b border-white/10 p-4 md:p-6 flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold text-gradient">Simulasi Pembayaran</h3>
+                <button onclick="closeSimulationModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="p-4 md:p-6">
+                <div class="mb-4 text-sm text-gray-400" id="modalUnitInfo">Unit -</div>
+                <div class="bg-white/5 rounded-xl p-4 mb-4 border border-white/10">
+                    <p class="text-sm text-gray-400">Administrasi (tanda jadi) <span class="float-right font-bold text-white" id="simBookingFee">Rp 0</span></p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white/5 rounded-xl p-4 border border-indigo-500/20">
+                        <h4 class="font-bold text-indigo-400 mb-3">Tenor 2 Tahun (24 bulan)</h4>
+                        <div class="space-y-2 text-sm">
+                            <p>Harga <span class="float-right font-semibold" id="col1Harga">Rp 0</span></p>
+                            <p>DP 20% <span class="float-right font-semibold" id="col1DP">Rp 0</span></p>
+                            <p>Pokok <span class="float-right font-semibold" id="col1Pinjaman">Rp 0</span></p>
+                            <p class="border-t border-white/10 pt-2 mt-2 font-bold text-emerald-400">Cicilan / bulan <span class="float-right" id="col1Cicilan">Rp 0</span></p>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl p-4 border border-indigo-500/20">
+                        <h4 class="font-bold text-indigo-400 mb-3">Tenor 3 Tahun (36 bulan)</h4>
+                        <div class="space-y-2 text-sm">
+                            <p>Harga <span class="float-right font-semibold" id="col2Harga">Rp 0</span></p>
+                            <p>DP 20% <span class="float-right font-semibold" id="col2DP">Rp 0</span></p>
+                            <p>Pokok <span class="float-right font-semibold" id="col2Pinjaman">Rp 0</span></p>
+                            <p class="border-t border-white/10 pt-2 mt-2 font-bold text-emerald-400">Cicilan / bulan <span class="float-right" id="col2Cicilan">Rp 0</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button onclick="window.downloadSimulationPDF()" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm font-bold transition">📄 Download PDF</button>
+                    <button onclick="window.contactMarketingSimulation()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-bold transition">📞 Hubungi Marketing</button>
+                    <button onclick="closeSimulationModal()" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- ===== VIDEO, FAQ, KONTAK, FOOTER ===== -->
-    <!-- Sama seperti sebelumnya -->
+    <!-- ===== MODAL WAITING LIST ===== -->
+    <div class="modal-overlay" id="waitingListModal">
+        <div class="modal-content">
+            <div class="sticky top-0 bg-[#0a0a0a] border-b border-white/10 p-4 md:p-6 flex justify-between items-center z-10">
+                <h3 class="text-xl font-bold text-gradient">Daftar Tunggu Unit</h3>
+                <button onclick="closeWaitingListModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="p-4 md:p-6">
+                <div class="mb-4 text-sm text-gray-400" id="waitingUnitInfo">Unit -</div>
+                <form onsubmit="event.preventDefault(); window.submitWaitingList();">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Nama Lengkap</label>
+                            <input type="text" id="wlNama" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="wlEmail" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">WhatsApp</label>
+                            <input type="tel" id="wlWhatsApp" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <input type="hidden" id="wlUnit" value="">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 py-3 rounded-lg font-bold transition">Kirim Pendaftaran</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== VIDEO SECTION ===== -->
+    <section id="video" class="bg-[#080808] py-12 md:py-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold text-center mb-6 text-gradient">Video Profil Kavling</h2>
+            <div data-aos="fade-up" data-aos-delay="100" class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/KAiCPSpSv00" title="Kavling Kebun Maoslor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section id="faq" class="py-12 md:py-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold text-center mb-6 text-gradient">Pertanyaan Umum (FAQ)</h2>
+            <div data-aos="fade-up" data-aos-delay="100" class="glass rounded-2xl p-4 md:p-8 border-white/5">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Bagaimana sistem cicilan?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
+                    </div>
+                    <div class="faq-answer">DP 20% di awal, sisanya dicicil selama 2 atau 3 tahun dengan bunga flat 12% per tahun. Administrasi dibayar sekali di awal.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Apakah ada biaya tersembunyi?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
+                    </div>
+                    <div class="faq-answer">Tidak ada biaya tersembunyi. Hanya DP, administrasi, dan cicilan sesuai tenor.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Bagaimana cara booking unit?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
+                    </div>
+                    <div class="faq-answer">Hubungi marketing melalui WhatsApp atau isi formulir waiting list jika unit sedang booking.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Apakah bisa survey lokasi?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5"></i>
+                    </div>
+                    <div class="faq-answer">Tentu, survey gratis. Hubungi marketing untuk janji temu.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== KONTAK & PEMASARAN ===== -->
+    <section id="kontak" class="bg-[#080808] py-12 md:py-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 data-aos="fade-up" class="text-2xl md:text-4xl font-bold text-center mb-6 text-gradient">Info & Pemasaran</h2>
+            <div data-aos="fade-up" data-aos-delay="100" class="glass rounded-2xl p-6 md:p-10 border-white/5 text-center">
+                <div class="flex flex-col md:flex-row justify-center gap-8 md:gap-12">
+                    <div>
+                        <i data-lucide="user" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                        <p class="font-bold">Ribut Nurdiansyah</p>
+                        <p class="text-sm text-gray-400">Marketing</p>
+                    </div>
+                    <div>
+                        <i data-lucide="phone" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                        <p class="font-bold">0877-8852-6410</p>
+                        <p class="text-sm text-gray-400">WhatsApp / Telepon</p>
+                    </div>
+                    <div>
+                        <i data-lucide="map-pin" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                        <p class="font-bold">Maoslor, Maos, Cilacap</p>
+                        <p class="text-sm text-gray-400">Jawa Tengah 53272</p>
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-center gap-4">
+                    <a href="https://wa.me/6287788526410" target="_blank" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-xl font-bold transition flex items-center gap-2">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> Chat WhatsApp
+                    </a>
+                    <a href="mailto:info@maoslor.com" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-bold transition flex items-center gap-2">
+                        <i data-lucide="mail" class="w-5 h-5"></i> Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="border-t border-white/10 py-6 text-center text-sm text-gray-500">
+        <p>&copy; 2026 Kavling Kebun Maoslor. All rights reserved.</p>
+        <p class="mt-1">Dikembangkan dengan ❤️ untuk investasi masa depan.</p>
+    </footer>
 
     <!-- ===== CHATBOT ===== -->
     <div class="chatbot-nav-container">
@@ -608,7 +783,6 @@
                 return mesh;
             }
 
-            // Layout sederhana: grid
             const cols = 6;
             const rows = Math.ceil(data.length / cols);
             const spacingX = 1.5;
@@ -649,20 +823,59 @@
             buildDenah(data);
         };
 
+        // Jika data sudah ada, langsung bangun
         if (window.dataTanahTable && window.dataTanahTable.length > 0) {
             window.rebuildDenah();
         } else {
-            console.log('Menunggu data unit untuk membangun denah...');
+            // Tunggu sampai data dimuat
+            const observer = new MutationObserver(() => {
+                if (window.dataTanahTable && window.dataTanahTable.length > 0) {
+                    window.rebuildDenah();
+                    observer.disconnect();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
         }
     </script>
 
-    <!-- Inline script minimal untuk inisialisasi tambahan -->
+    <!-- Inline script untuk inisialisasi tambahan dan FAQ toggle -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Inisialisasi AOS dan Lucide sudah ditangani di script.js
-            // Tapi jika belum, kita panggil
             if (typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
             if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Mobile menu
+            const menuBtn = document.getElementById('mobileMenuButton');
+            const closeBtn = document.getElementById('mobileMenuClose');
+            const panel = document.getElementById('mobileMenuPanel');
+            if (menuBtn && panel) {
+                menuBtn.addEventListener('click', () => {
+                    panel.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        panel.classList.add('hidden');
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+                document.querySelectorAll('.mobile-menu-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        panel.classList.add('hidden');
+                        document.body.style.overflow = 'auto';
+                    });
+                });
+            }
+
+            // FAQ toggle
+            window.toggleFaq = function(el) {
+                const answer = el.nextElementSibling;
+                const icon = el.querySelector('.faq-icon');
+                if (answer) {
+                    answer.classList.toggle('open');
+                    if (icon) icon.classList.toggle('open');
+                }
+            };
         });
     </script>
 </body>
