@@ -735,6 +735,7 @@
         if (!container) return;
 
         function buildDenah(data) {
+            // Hapus konten sebelumnya
             while (container.firstChild) container.removeChild(container.firstChild);
 
             const scene = new THREE.Scene();
@@ -814,6 +815,7 @@
             });
         }
 
+        // Fungsi global untuk rebuild denah
         window.rebuildDenah = function() {
             const data = window.dataTanahTable || [];
             if (data.length === 0) {
@@ -823,18 +825,23 @@
             buildDenah(data);
         };
 
-        // Jika data sudah ada, langsung bangun
+        // Jika data sudah ada, bangun langsung
         if (window.dataTanahTable && window.dataTanahTable.length > 0) {
             window.rebuildDenah();
         } else {
-            // Tunggu sampai data dimuat
-            const observer = new MutationObserver(() => {
+            // Tunggu data dengan polling
+            let attempts = 0;
+            const maxAttempts = 20;
+            const interval = setInterval(() => {
+                attempts++;
                 if (window.dataTanahTable && window.dataTanahTable.length > 0) {
                     window.rebuildDenah();
-                    observer.disconnect();
+                    clearInterval(interval);
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(interval);
+                    console.warn('Gagal memuat data untuk denah setelah beberapa detik.');
                 }
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
+            }, 500);
         }
     </script>
 
