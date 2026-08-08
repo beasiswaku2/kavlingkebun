@@ -1,245 +1,265 @@
-// ============================================================
-//  SCRIPT.JS – KAVLING MAOSLOR DASHBOARD + CHATBOT
-// ============================================================
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' * 'unsafe-inline' 'unsafe-eval' data: blob:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Kavling Kebun Maoslor - Investasi Kebun Hidroponik Cilacap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet" />
 
-// ========== KONFIGURASI API (Ganti dengan URL Deployment Terbaru Anda) ==========
-const API_BASE = 'https://script.google.com/macros/s/AKfycbyjOtIzXWvgVBiVWO1FlUifG0QH7sybRooUbUJi7G733ElY42H-SjFXsEnknrkETW3fAw/exec';
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #050505;
+            color: white;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        section { padding: 60px 20px; }
+        @media (min-width: 768px) { section { padding: 100px 20px; } }
 
-// ========== VARIABEL GLOBAL ==========
-let dataTanahTable = [];
-let currentSimulationData = null;
-let currentUnitData = null;
-let currentWaitingUnitData = null;
-
-// ========== FUNGSI API ==========
-
-async function loadUnits() {
-    try {
-        const res = await fetch(`${API_BASE}?action=list&sheet=units`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        dataTanahTable = data;
-        console.log('✅ Data unit dimuat:', dataTanahTable.length, 'unit');
+        #denah-canvas-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #050505;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        @media (min-width: 768px) { #denah-canvas-container { height: 500px; border-radius: 30px; } }
         
-        window.dataTanahTable = dataTanahTable;
-        renderTable();
-        if (typeof window.rebuildDenah === 'function') {
-            window.rebuildDenah();
+        .ui-panel-denah {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            pointer-events: none;
         }
-        return data;
-    } catch (err) {
-        console.error('❌ Gagal memuat unit:', err);
-        const body = document.getElementById('dataTanahBody');
-        if (body) {
-            body.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-400">Gagal memuat data. Periksa koneksi atau refresh.</td></tr>';
+        .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+        .bg-tersedia { background-color: #22c55e; }
+        .bg-booking { background-color: #eab308; }
+        .bg-terjual { background-color: #ef4444; }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 200; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease; padding: 20px;
         }
-        return [];
-    }
-}
-
-async function logChat(sender, text, isFromMe = false, source = 'web') {
-    try {
-        await fetch(API_BASE, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-                action: 'chat_log',
-                sender: sender,
-                text: text,
-                isFromMe: isFromMe ? 'Yes' : 'No',
-                source: source
-            })
-        });
-    } catch (err) {
-        console.error('Gagal log chat:', err);
-    }
-}
-
-async function submitBooking(unitId, nama, email, wa, status = 'waiting') {
-    try {
-        const res = await fetch(API_BASE, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-                action: 'booking',
-                unit_id: unitId,
-                nama: nama,
-                email: email,
-                wa: wa,
-                status: status
-            })
-        });
-        return await res.json();
-    } catch (err) {
-        console.error('Gagal submit booking:', err);
-        return { error: err.message };
-    }
-}
-
-async function askAI(prompt) {
-    try {
-        const res = await fetch(API_BASE, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-                action: 'ai',
-                prompt: prompt
-            })
-        });
-        const data = await res.json();
-        return data.answer || data.error || 'Maaf, saya tidak bisa menjawab.';
-    } catch (err) {
-        console.error('AI error:', err);
-        return 'Terjadi kesalahan saat menghubungi AI.';
-    }
-}
-
-// ========== RENDER TABEL HARGA ==========
-
-function renderTable() {
-    const body = document.getElementById('dataTanahBody');
-    if (!body) return;
-    
-    if (!dataTanahTable || dataTanahTable.length === 0) {
-        body.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-400">Belum ada data unit.</td></tr>';
-        return;
-    }
-
-    body.innerHTML = dataTanahTable.map(d => {
-        const statusColor = d.status === "Tersedia" ? "text-green-500" : 
-                           (d.status === "Booking" ? "text-yellow-500" : "text-red-500");
-        let btn = '';
-        if (d.status === "Tersedia") {
-            btn = `<button onclick="openSimulationModal('${d.id}','${d.harga}')" 
-                           class="bg-indigo-600/20 hover:bg-indigo-600 text-indigo-400 hover:text-white px-3 py-1 rounded text-xs font-bold transition">Simulasi</button>`;
-        } else if (d.status === "Booking") {
-            btn = `<button onclick="openWaitingListModal('${d.id}','${d.harga}')" 
-                           class="bg-yellow-600/20 hover:bg-yellow-600 text-yellow-400 hover:text-white px-3 py-1 rounded text-xs font-bold transition">Waiting</button>`;
-        } else {
-            btn = `<button disabled class="bg-gray-600/20 text-gray-500 px-3 py-1 rounded text-xs font-bold">Terjual</button>`;
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1);
+            max-width: 700px; width: 100%; border-radius: 20px; padding: 24px;
+            max-height: 90vh; overflow-y: auto;
         }
-        const dimensiStr = (d.p === "Khusus" || d.l === "Khusus") ? "Khusus" : `${d.l}m x ${d.p}m`;
-        return `<tr class="border-b border-white/10 hover:bg-white/5 transition">
-                    <td class="p-3 font-bold">UNIT ${d.id}</td>
-                    <td class="p-3">${d.luas} m²</td>
-                    <td class="p-3">${dimensiStr}</td>
-                    <td class="p-3 ${statusColor} font-bold">${d.status}</td>
-                    <td class="p-3">${d.harga}</td>
-                    <td class="p-3 text-center">${btn}</td>
-                </tr>`;
-    }).join('');
-}
+    </style>
+</head>
+<body>
 
-// ========== FUNGSI UTILITY ==========
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-[100] px-4 py-4 md:px-6 md:py-6">
+        <div class="max-w-6xl mx-auto flex justify-between items-center glass px-4 py-3 md:px-8 md:py-4 rounded-2xl">
+            <div class="text-lg md:text-xl font-extrabold tracking-tighter">
+                KAVLING KEBUN <span class="text-indigo-500">MAOSLOR</span>
+            </div>
+            <div class="hidden md:flex gap-6 text-xs font-bold uppercase tracking-widest text-gray-400 items-center">
+                <a href="#home">Home</a>
+                <a href="#denah">Denah</a>
+                <a href="#harga">Harga</a>
+            </div>
+        </div>
+    </nav>
 
-function findUnit(id) {
-    return dataTanahTable.find(u => u.id.toUpperCase() === id.toUpperCase());
-}
+    <!-- HOME SECTION -->
+    <section id="home" class="min-h-[60vh] flex items-center justify-center pt-28">
+        <div class="max-w-7xl mx-auto text-center px-4">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-gradient leading-tight">
+                Miliki Kavling Impian<br /><span class="text-emerald-300">Dengan Cicilan Ringan 1-3 Tahun</span>
+            </h1>
+        </div>
+    </section>
 
-function parsePrice(priceStr) {
-    return parseInt(priceStr.replace(/[^0-9]/g, ''));
-}
+    <!-- DENAH SECTION -->
+    <section id="denah" class="bg-[#080808]">
+        <div class="max-w-6xl mx-auto px-4">
+            <div id="denah-canvas-container">
+                <div class="ui-panel-denah">
+                    <div class="flex gap-2 text-xs uppercase tracking-widest font-bold">
+                        <span class="flex items-center"><span class="dot bg-tersedia"></span> Tersedia</span>
+                        <span class="flex items-center"><span class="dot bg-booking"></span> Booking</span>
+                        <span class="flex items-center"><span class="dot bg-terjual"></span> Terjual</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-function formatCurrency(num) {
-    return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+    <!-- HARGA SECTION -->
+    <section id="harga" class="py-12 md:py-20">
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-4xl font-bold mb-2 text-gradient">Daftar Harga Cicilan Per Unit</h2>
+            </div>
+            <div class="flex justify-end mb-4">
+                <input type="text" id="searchUnit" placeholder="Cari nomor unit..." onkeyup="window.filterTable()"
+                       class="w-full md:w-64 bg-white/5 border border-white/10 rounded-xl py-2 px-4 focus:outline-none focus:border-indigo-500 text-sm">
+            </div>
+            <div class="glass rounded-3xl overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse" id="tableHarga">
+                        <thead>
+                            <tr class="bg-indigo-600/20 text-indigo-400 uppercase text-xs font-bold tracking-widest">
+                                <th class="p-4">ID Unit</th>
+                                <th class="p-4">Luas (m²)</th>
+                                <th class="p-4">Dimensi (m)</th>
+                                <th class="p-4">Status</th>
+                                <th class="p-4">Harga</th>
+                                <th class="p-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300 divide-y divide-white/5" id="dataTanahBody">
+                            <tr><td colspan="6" class="text-center p-4 text-gray-400">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
 
-function getBookingFee(price) {
-    return Math.round(price * 0.03);
-}
+    <!-- MODAL SIMULASI -->
+    <div class="modal-overlay" id="simulationModal">
+        <div class="modal-content">
+            <h3 class="text-xl font-bold mb-2">Simulasi Cicilan</h3>
+            <p id="modalUnitInfo" class="text-sm text-gray-400 mb-4"></p>
+            <div class="space-y-2 text-sm mb-6">
+                <p>Biaya Administrasi: <span id="simBookingFee" class="font-bold"></span></p>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="glass p-3 rounded-xl">
+                        <h4 class="font-bold text-indigo-400">Tenor 2 Tahun</h4>
+                        <p>Harga: <span id="col1Harga"></span></p>
+                        <p>DP 20%: <span id="col1DP"></span></p>
+                        <p>Pokok: <span id="col1Pinjaman"></span></p>
+                        <p class="mt-2 font-bold text-emerald-400">Cicilan: <span id="col1Cicilan"></span>/bln</p>
+                    </div>
+                    <div class="glass p-3 rounded-xl">
+                        <h4 class="font-bold text-indigo-400">Tenor 3 Tahun</h4>
+                        <p>Harga: <span id="col2Harga"></span></p>
+                        <p>DP 20%: <span id="col2DP"></span></p>
+                        <p>Pokok: <span id="col2Pinjaman"></span></p>
+                        <p class="mt-2 font-bold text-emerald-400">Cicilan: <span id="col2Cicilan"></span>/bln</p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="document.getElementById('simulationModal').classList.remove('active'); document.body.style.overflow='auto';"
+                    class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded-xl font-bold text-sm">Tutup</button>
+        </div>
+    </div>
 
-function calculateBothSimulations(unitPrice) {
-    const price = parsePrice(unitPrice);
-    const dpPercent = 20;
-    const dp = Math.round(price * (dpPercent / 100));
-    const principal = price - dp;
-    const bookingFee = getBookingFee(price);
-    const interestRate = 12;
+    <!-- MODAL WAITING LIST -->
+    <div class="modal-overlay" id="waitingListModal">
+        <div class="modal-content">
+            <h3 class="text-xl font-bold mb-2">Daftar Tunggu (Waiting List)</h3>
+            <p id="waitingUnitInfo" class="text-sm text-gray-400 mb-4"></p>
+            <div class="space-y-4">
+                <input type="hidden" id="wlUnit">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Nama Lengkap</label>
+                    <input type="text" id="wlNama" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Email</label>
+                    <input type="email" id="wlEmail" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Nomor WhatsApp</label>
+                    <input type="text" id="wlWhatsApp" class="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="window.submitWaitingList()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-sm transition">Daftar</button>
+                    <button onclick="document.getElementById('waitingListModal').classList.remove('active'); document.body.style.overflow='auto';"
+                            class="flex-1 bg-gray-700 hover:bg-gray-600 py-3 rounded-xl font-bold text-sm transition">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    const bunga2tahun = Math.round(principal * (interestRate / 100) * 2);
-    const total2tahun = principal + bunga2tahun;
-    const cicilan2tahun = Math.round(total2tahun / 24);
-
-    const bunga3tahun = Math.round(principal * (interestRate / 100) * 3);
-    const total3tahun = principal + bunga3tahun;
-    const cicilan3tahun = Math.round(total3tahun / 36);
-
-    return { price, bookingFee, dp, principal, year2: { cicilan: cicilan2tahun }, year3: { cicilan: cicilan3tahun } };
-}
-
-// ========== MODAL CONTROLS ==========
-
-window.openSimulationModal = function(unitId, unitPrice) {
-    const unit = findUnit(unitId);
-    if (!unit) return;
-    currentUnitData = unit;
-    const calc = calculateBothSimulations(unit.harga);
-    currentSimulationData = calc;
-    
-    document.getElementById('modalUnitInfo').textContent = `Unit ${unit.id} | Luas ${unit.luas}m² | Status ${unit.status}`;
-    document.getElementById('simBookingFee').textContent = formatCurrency(calc.bookingFee);
-    document.getElementById('col1Harga').textContent = formatCurrency(calc.price);
-    document.getElementById('col1DP').textContent = formatCurrency(calc.dp);
-    document.getElementById('col1Pinjaman').textContent = formatCurrency(calc.principal);
-    document.getElementById('col1Cicilan').textContent = formatCurrency(calc.year2.cicilan);
-    document.getElementById('col2Harga').textContent = formatCurrency(calc.price);
-    document.getElementById('col2DP').textContent = formatCurrency(calc.dp);
-    document.getElementById('col2Pinjaman').textContent = formatCurrency(calc.principal);
-    document.getElementById('col2Cicilan').textContent = formatCurrency(calc.year3.cicilan);
-    
-    document.getElementById('simulationModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-};
-
-window.openWaitingListModal = function(unitId, unitPrice) {
-    const unit = findUnit(unitId);
-    if (!unit) return;
-    currentWaitingUnitData = unit;
-    document.getElementById('waitingUnitInfo').textContent = `Unit ${unit.id} | Luas ${unit.luas}m² | Harga ${unit.harga} | Status ${unit.status}`;
-    document.getElementById('wlUnit').value = `UNIT ${unit.id}`;
-    document.getElementById('waitingListModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-};
-
-window.submitWaitingList = async function() {
-    if (!currentWaitingUnitData) return;
-    const nama = document.getElementById('wlNama').value.trim();
-    const email = document.getElementById('wlEmail').value.trim();
-    const wa = document.getElementById('wlWhatsApp').value.trim();
-    if (!nama || !email || !wa) {
-        alert('Mohon lengkapi data');
-        return;
+    <!-- SCRIPTS -->
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
     }
-    const result = await submitBooking(currentWaitingUnitData.id, nama, email, wa, 'waiting');
-    if (result.success) {
-        alert('✅ Pendaftaran waiting list berhasil!');
-        document.getElementById('waitingListModal').classList.remove('active');
-        document.body.style.overflow = 'auto';
-        const message = `Halo Admin, ada pendaftar waiting list unit ${currentWaitingUnitData.id}. Nama: ${nama}, WA: ${wa}`;
-        window.open(`https://wa.me/6287788526410?text=${encodeURIComponent(message)}`, '_blank');
-    } else {
-        alert('❌ Gagal mendaftar: ' + (result.error || 'Unknown error'));
-    }
-};
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-window.filterTable = function() {
-    const filter = document.getElementById('searchUnit')?.value.toUpperCase() || '';
-    const rows = document.querySelectorAll('#dataTanahBody tr');
-    rows.forEach(row => {
-        const td = row.querySelector('td');
-        row.style.display = td && td.textContent.toUpperCase().includes(filter) ? '' : 'none';
-    });
-};
+        const container = document.getElementById('denah-canvas-container');
+        if (container) {
+            function buildDenah(data) {
+                while (container.firstChild) container.removeChild(container.firstChild);
+                const scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x050505);
+                const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+                camera.position.set(0, 35, 16);
 
-document.addEventListener('DOMContentLoaded', async function() {
-    await loadUnits();
-    renderTable();
-});
+                const renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+
+                scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+                const statusColors = { "Tersedia": "#22c55e", "Booking": "#eab308", "Terjual": "#ef4444" };
+
+                data.forEach((item, index) => {
+                    const color = statusColors[item.status] || '#888';
+                    const geo = new THREE.BoxGeometry(1.2, 0.5, 1.2);
+                    const mat = new THREE.MeshStandardMaterial({ color: color });
+                    const mesh = new THREE.Mesh(geo, mat);
+                    const cols = 6;
+                    const x = (index % cols - cols / 2) * 1.5;
+                    const z = (Math.floor(index / cols) - 2) * 1.5;
+                    mesh.position.set(x, 0.25, z);
+                    scene.add(mesh);
+                });
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    renderer.render(scene, camera);
+                }
+                animate();
+            }
+
+            window.rebuildDenah = function() {
+                if (window.dataTanahTable && window.dataTanahTable.length > 0) {
+                    buildDenah(window.dataTanahTable);
+                }
+            };
+        }
+    </script>
+</body>
+</html>
